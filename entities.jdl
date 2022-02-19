@@ -1,0 +1,28 @@
+entity Gateway {
+	id UUID,
+	serialNumber String required unique,
+	name String required,
+	ipAddress String required pattern(/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)
+}
+
+enum Status {
+  ONLINE,
+  OFFLINE
+}
+
+entity Device {
+	id UUID,
+	UID Integer required unique,
+	vendor String required,
+	date Instant required,
+	status Status required
+}
+
+relationship OneToMany {
+	Gateway{device} to Device
+}
+
+dto * with mapstruct
+paginate * with pagination
+service * with serviceClass
+filter *

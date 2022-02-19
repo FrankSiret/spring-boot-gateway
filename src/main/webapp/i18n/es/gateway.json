@@ -1,0 +1,27 @@
+{
+  "gatewaysApp": {
+    "gateway": {
+      "home": {
+        "title": "Gateways",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Gateway",
+        "createOrEditLabel": "Crear o editar Gateway",
+        "notFound": "Ningún Gateways encontrado"
+      },
+      "created": "Un nuevo Gateway ha sido creado con el identificador {{ param }}",
+      "updated": "Un Gateway ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Gateway ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Gateway {{ id }}?"
+      },
+      "detail": {
+        "title": "Gateway"
+      },
+      "id": "Id",
+      "serialNumber": "Serial Number",
+      "name": "Name",
+      "ipAddress": "Ip Address",
+      "device": "Device"
+    }
+  }
+}

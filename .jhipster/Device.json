@@ -1,0 +1,48 @@
+{
+  "applications": "*",
+  "changelogDate": "20220219210921",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "device",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "uID",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "vendor",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "Status",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "ONLINE,OFFLINE"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "Device",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "gateway",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "gateway",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

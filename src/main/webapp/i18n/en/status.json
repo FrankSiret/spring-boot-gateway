@@ -1,0 +1,9 @@
+{
+  "gatewaysApp": {
+    "Status": {
+      "null": "",
+      "ONLINE": "ONLINE",
+      "OFFLINE": "OFFLINE"
+    }
+  }
+}
