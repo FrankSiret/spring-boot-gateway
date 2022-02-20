@@ -157,3 +157,8 @@ Desktop.ini
 ######################
 /coverage/
 /.nyc_output/
+
+######################
+yarn-error.log
+yarn.lock
+.vscode/settings.json

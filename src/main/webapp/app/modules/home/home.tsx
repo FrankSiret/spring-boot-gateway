@@ -49,7 +49,7 @@ export const Home = () => {
         <h2>API</h2>
         <p>
           <Translate contentKey="home.messages.api">You can check the API Documentation </Translate>
-          <a href="http://localhost:5000/api-docs/" rel="noreferrer" target="_blank">
+          <a href="/admin/api" rel="noreferrer" target="_blank">
             <Translate contentKey="home.messages.here">here </Translate>
           </a>
           <Translate contentKey="home.messages.swagger">provided by </Translate>{' '}

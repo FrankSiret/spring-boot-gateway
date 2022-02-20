@@ -10,8 +10,8 @@ export interface ILoginModalProps {
 }
 
 const LoginModal = (props: ILoginModalProps) => {
-  const login = ({ username, password, rememberMe }) => {
-    props.handleLogin(username, password, rememberMe);
+  const login = ({ username, password }) => {
+    props.handleLogin(username, password, true);
   };
 
   const { loginError, handleClose } = props;
@@ -45,7 +45,7 @@ const LoginModal = (props: ILoginModalProps) => {
             </Translate>
           </Alert>
         ) : null}
-        <Form onFinish={login} initialValues={{ rememberMe: true }} form={formLogin} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+        <Form onFinish={login} form={formLogin} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
           <Form.Item
             name="username"
             label={translate('global.form.username.label')}
@@ -62,11 +62,11 @@ const LoginModal = (props: ILoginModalProps) => {
           >
             <Input data-cy="password" placeholder={translate('login.form.password.placeholder')} />
           </Form.Item>
-          <Form.Item name="rememberMe" wrapperCol={{ offset: 8, span: 16 }}>
+          {/* <Form.Item name="rememberMe" wrapperCol={{ offset: 8, span: 16 }}>
             <Checkbox>
               <Translate contentKey="login.form.rememberme">Remember me</Translate>
             </Checkbox>
-          </Form.Item>
+          </Form.Item> */}
         </Form>
       </>
     </Modal>
