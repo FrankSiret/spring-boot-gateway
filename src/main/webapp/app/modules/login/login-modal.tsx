@@ -1,8 +1,6 @@
 import React from 'react';
-import { Translate, translate, ValidatedField } from 'react-jhipster';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert, Row, Col, Form } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { Translate, translate } from 'react-jhipster';
+import { Button, Modal, Alert, Form, Input, Checkbox } from 'antd';
 
 export interface ILoginModalProps {
   showModal: boolean;
@@ -16,90 +14,61 @@ const LoginModal = (props: ILoginModalProps) => {
     props.handleLogin(username, password, rememberMe);
   };
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, touchedFields },
-  } = useForm({ mode: 'onTouched' });
-
   const { loginError, handleClose } = props;
 
+  const [formLogin] = Form.useForm();
+
+  const loginClick = () => {
+    formLogin.submit();
+  };
+
   return (
-    <Modal isOpen={props.showModal} toggle={handleClose} backdrop="static" id="login-page" autoFocus={false}>
-      <Form onSubmit={handleSubmit(login)}>
-        <ModalHeader id="login-title" data-cy="loginTitle" toggle={handleClose}>
-          <Translate contentKey="login.title">Sign in</Translate>
-        </ModalHeader>
-        <ModalBody>
-          <Row>
-            <Col md="12">
-              {loginError ? (
-                <Alert color="danger" data-cy="loginError">
-                  <Translate contentKey="login.messages.error.authentication">
-                    <strong>Failed to sign in!</strong> Please check your credentials and try again.
-                  </Translate>
-                </Alert>
-              ) : null}
-            </Col>
-            <Col md="12">
-              <ValidatedField
-                name="username"
-                label={translate('global.form.username.label')}
-                placeholder={translate('global.form.username.placeholder')}
-                required
-                autoFocus
-                data-cy="username"
-                validate={{ required: 'Username cannot be empty!' }}
-                register={register}
-                error={errors.username}
-                isTouched={touchedFields.username}
-              />
-              <ValidatedField
-                name="password"
-                type="password"
-                label={translate('login.form.password')}
-                placeholder={translate('login.form.password.placeholder')}
-                required
-                data-cy="password"
-                validate={{ required: 'Password cannot be empty!' }}
-                register={register}
-                error={errors.password}
-                isTouched={touchedFields.password}
-              />
-              <ValidatedField
-                name="rememberMe"
-                type="checkbox"
-                check
-                label={translate('login.form.rememberme')}
-                value={true}
-                register={register}
-              />
-            </Col>
-          </Row>
-          <div className="mt-1">&nbsp;</div>
-          <Alert color="warning">
-            <Link to="/account/reset/request" data-cy="forgetYourPasswordSelector">
-              <Translate contentKey="login.password.forgot">Did you forget your password?</Translate>
-            </Link>
+    <Modal
+      visible={props.showModal}
+      title={<Translate contentKey="login.title">Sign in</Translate>}
+      onCancel={handleClose}
+      footer={[
+        <Button onClick={handleClose} key="cancel">
+          <Translate contentKey="entity.action.cancel">Cancel</Translate>
+        </Button>,
+        <Button type="primary" onClick={loginClick} data-cy="submit" key="login">
+          <Translate contentKey="login.form.button">Sign in</Translate>
+        </Button>,
+      ]}
+      // data-cy="loginTitle"
+    >
+      <>
+        {loginError ? (
+          <Alert type="error" data-cy="loginError">
+            <Translate contentKey="login.messages.error.authentication">
+              <strong>Failed to sign in!</strong> Please check your credentials and try again.
+            </Translate>
           </Alert>
-          <Alert color="warning">
-            <span>
-              <Translate contentKey="global.messages.info.register.noaccount">You don&apos;t have an account yet?</Translate>
-            </span>{' '}
-            <Link to="/account/register">
-              <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
-            </Link>
-          </Alert>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={handleClose} tabIndex={1}>
-            <Translate contentKey="entity.action.cancel">Cancel</Translate>
-          </Button>{' '}
-          <Button color="primary" type="submit" data-cy="submit">
-            <Translate contentKey="login.form.button">Sign in</Translate>
-          </Button>
-        </ModalFooter>
-      </Form>
+        ) : null}
+        <Form onFinish={login} initialValues={{ rememberMe: true }} form={formLogin} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+          <Form.Item
+            name="username"
+            label={translate('global.form.username.label')}
+            // data-cy="username"
+            rules={[{ required: true, message: translate('login.required.username') }]} // 'Please input your username!'
+          >
+            <Input data-cy="username" autoFocus placeholder={translate('global.form.username.placeholder')} />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            label={translate('login.form.password')}
+            // data-cy="password"
+            rules={[{ required: true, message: translate('login.required.password') }]} // 'Please input your password!'
+          >
+            <Input data-cy="password" placeholder={translate('login.form.password.placeholder')} />
+          </Form.Item>
+          <Form.Item name="rememberMe" wrapperCol={{ offset: 8, span: 16 }}>
+            <Checkbox>
+              <Translate contentKey="login.form.rememberme">Remember me</Translate>
+            </Checkbox>
+          </Form.Item>
+        </Form>
+      </>
     </Modal>
   );
 };

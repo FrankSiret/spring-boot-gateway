@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import { Modal, Button } from 'antd';
 import { Translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { StopOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getEntity, deleteEntity } from './device.reducer';
@@ -35,27 +35,38 @@ export const DeviceDeleteDialog = (props: RouteComponentProps<{ id: string }>) =
   };
 
   return (
-    <Modal isOpen toggle={handleClose}>
-      <ModalHeader toggle={handleClose} data-cy="deviceDeleteDialogHeading">
-        <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
-      </ModalHeader>
-      <ModalBody id="gatewaysApp.device.delete.question">
+    <Modal
+      visible
+      title={<Translate contentKey="entity.delete.title">Confirm delete operation</Translate>}
+      onCancel={handleClose}
+      footer={[
+        <Button key="back" size="small" onClick={handleClose} icon={<StopOutlined />}>
+          <Translate contentKey="entity.action.cancel">Cancel</Translate>
+        </Button>,
+        <Button
+          key="submit"
+          size="small"
+          danger
+          type="primary"
+          id="jhi-confirm-delete-gateway"
+          data-cy="entityConfirmDeleteButton"
+          onClick={confirmDelete}
+          icon={<DeleteOutlined />}
+        >
+          <Translate contentKey="entity.action.delete">Delete</Translate>
+        </Button>,
+      ]}
+      closeIcon={
+        <Button onClick={handleClose} data-cy="gatewayDeleteDialogHeading">
+          X
+        </Button>
+      }
+    >
+      <div id="gatewaysApp.device.delete.question">
         <Translate contentKey="gatewaysApp.device.delete.question" interpolate={{ id: deviceEntity.id }}>
           Are you sure you want to delete this Device?
         </Translate>
-      </ModalBody>
-      <ModalFooter>
-        <Button color="secondary" onClick={handleClose}>
-          <FontAwesomeIcon icon="ban" />
-          &nbsp;
-          <Translate contentKey="entity.action.cancel">Cancel</Translate>
-        </Button>
-        <Button id="jhi-confirm-delete-device" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmDelete}>
-          <FontAwesomeIcon icon="trash" />
-          &nbsp;
-          <Translate contentKey="entity.action.delete">Delete</Translate>
-        </Button>
-      </ModalFooter>
+      </div>
     </Modal>
   );
 };

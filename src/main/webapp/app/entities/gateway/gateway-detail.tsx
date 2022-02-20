@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col } from 'reactstrap';
+import { Button, Row, Col } from 'antd';
 import { Translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons';
 
 import { getEntity } from './gateway.reducer';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
@@ -14,6 +14,14 @@ export const GatewayDetail = (props: RouteComponentProps<{ id: string }>) => {
   useEffect(() => {
     dispatch(getEntity(props.match.params.id));
   }, []);
+
+  const backClick = () => {
+    props.history.replace('/gateway');
+  };
+
+  const editClick = () => {
+    props.history.replace(`/gateway/${gatewayEntity.id}/edit`);
+  };
 
   const gatewayEntity = useAppSelector(state => state.gateway.entity);
   return (
@@ -48,18 +56,11 @@ export const GatewayDetail = (props: RouteComponentProps<{ id: string }>) => {
           </dt>
           <dd>{gatewayEntity.ipAddress}</dd>
         </dl>
-        <Button tag={Link} to="/gateway" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.back">Back</Translate>
-          </span>
+        <Button data-cy="entityDetailsBackButton" onClick={backClick} icon={<ArrowLeftOutlined />}>
+          <Translate contentKey="entity.action.back">Back</Translate>
         </Button>
-        &nbsp;
-        <Button tag={Link} to={`/gateway/${gatewayEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.edit">Edit</Translate>
-          </span>
+        <Button type="primary" onClick={editClick} icon={<EditOutlined />}>
+          <Translate contentKey="entity.action.edit">Edit</Translate>
         </Button>
       </Col>
     </Row>

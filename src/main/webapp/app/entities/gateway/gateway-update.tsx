@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, FormText } from 'reactstrap';
-import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Row, Col, Form, Input } from 'antd';
+import { isNumber, Translate, translate } from 'react-jhipster';
+import { SaveOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 
 import { getEntity, updateEntity, createEntity, reset } from './gateway.reducer';
 import { IGateway } from 'app/shared/model/gateway.model';
@@ -57,6 +57,10 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
           ...gatewayEntity,
         };
 
+  const cancelClick = () => {
+    props.history.replace('/gateway');
+  };
+
   return (
     <div>
       <Row className="justify-content-center">
@@ -71,67 +75,62 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
           {loading ? (
             <p>Loading...</p>
           ) : (
-            <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
+            <Form layout="vertical" initialValues={defaultValues()} onFinish={saveEntity}>
               {!isNew ? (
-                <ValidatedField
-                  name="id"
-                  required
-                  readOnly
-                  id="gateway-id"
-                  label={translate('gatewaysApp.gateway.id')}
-                  validate={{ required: true }}
-                />
+                <Form.Item name="id" id="gateway-id" label={translate('gatewaysApp.gateway.id')} rules={[{ required: true }]}>
+                  <Input readOnly />
+                </Form.Item>
               ) : null}
-              <ValidatedField
+              <Form.Item
                 label={translate('gatewaysApp.gateway.serialNumber')}
                 id="gateway-serialNumber"
                 name="serialNumber"
-                data-cy="serialNumber"
-                type="text"
-                validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
-                }}
-              />
-              <ValidatedField
+                // data-cy="serialNumber"
+                rules={[{ required: true, message: translate('entity.validation.required') }]}
+              >
+                <Input data-cy="serialNumber" />
+              </Form.Item>
+              <Form.Item
                 label={translate('gatewaysApp.gateway.name')}
                 id="gateway-name"
                 name="name"
-                data-cy="name"
-                type="text"
-                validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
-                }}
-              />
-              <ValidatedField
+                // data-cy="name"
+                rules={[{ required: true, message: translate('entity.validation.required') }]}
+              >
+                <Input data-cy="name" />
+              </Form.Item>
+              <Form.Item
                 label={translate('gatewaysApp.gateway.ipAddress')}
                 id="gateway-ipAddress"
                 name="ipAddress"
-                data-cy="ipAddress"
-                type="text"
-                validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
-                  pattern: {
-                    value: /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/,
+                // data-cy="ipAddress"
+                rules={[
+                  { required: true, message: translate('entity.validation.required') },
+                  {
+                    type: 'regexp',
+                    pattern: /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/,
                     message: translate('entity.validation.pattern', {
                       pattern: '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.|$)){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$',
                     }),
                   },
-                }}
-              />
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/gateway" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
-                &nbsp;
-                <span className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.back">Back</Translate>
-                </span>
+                ]}
+              >
+                <Input data-cy="ipAddress" />
+              </Form.Item>
+              <Button id="cancel-save" data-cy="entityCreateCancelButton" onClick={cancelClick} icon={<ArrowLeftOutlined />}>
+                <Translate contentKey="entity.action.back">Back</Translate>
               </Button>
-              &nbsp;
-              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
-                &nbsp;
+              <Button
+                type="primary"
+                id="save-entity"
+                data-cy="entityCreateSaveButton"
+                htmlType="submit"
+                disabled={updating}
+                icon={<SaveOutlined />}
+              >
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
-            </ValidatedForm>
+            </Form>
           )}
         </Col>
       </Row>

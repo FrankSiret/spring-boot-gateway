@@ -5,7 +5,7 @@ import { setLocale } from 'app/shared/reducers/locale';
 TranslatorContext.setDefaultLocale('en');
 TranslatorContext.setRenderInnerTextForMissingKeys(false);
 
-export const languages: any = {
+export const languages = {
   en: { name: 'English' },
   es: { name: 'Español' },
   // jhipster-needle-i18n-language-key-pipe - JHipster will add/remove languages in this object

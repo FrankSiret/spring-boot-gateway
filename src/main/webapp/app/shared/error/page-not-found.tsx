@@ -1,17 +1,27 @@
 import React from 'react';
-import { Translate } from 'react-jhipster';
-import { Alert } from 'reactstrap';
+import { translate } from 'react-jhipster';
+import { Button, Result } from 'antd';
+import { useHistory } from 'react-router-dom';
 
-class PageNotFound extends React.Component {
-  render() {
-    return (
-      <div>
-        <Alert color="danger">
-          <Translate contentKey="error.http.404">The page does not exist.</Translate>
-        </Alert>
-      </div>
-    );
-  }
-}
+const PageNotFound = () => {
+  const history = useHistory();
+
+  const backClick = () => {
+    history.push('/');
+  };
+
+  return (
+    <Result
+      status="404"
+      title="404"
+      subTitle={translate('Sorry, the page you visited does not exist.')}
+      extra={
+        <Button type="primary" onClick={backClick}>
+          Back Home
+        </Button>
+      }
+    />
+  );
+};
 
 export default PageNotFound;

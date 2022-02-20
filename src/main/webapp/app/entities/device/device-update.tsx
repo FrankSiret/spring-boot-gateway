@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, FormText } from 'reactstrap';
-import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Row, Col, Form, Input, DatePicker, Radio } from 'antd';
+import { isNumber, Translate, translate } from 'react-jhipster';
+import { SaveOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 
 import { IGateway } from 'app/shared/model/gateway.model';
 import { getEntities as getGateways } from 'app/entities/gateway/gateway.reducer';
@@ -72,6 +72,10 @@ export const DeviceUpdate = (props: RouteComponentProps<{ id: string }>) => {
           gateway: deviceEntity?.gateway?.id,
         };
 
+  const cancelClick = () => {
+    props.history.replace('/device');
+  };
+
   return (
     <div>
       <Row className="justify-content-center">
@@ -86,92 +90,76 @@ export const DeviceUpdate = (props: RouteComponentProps<{ id: string }>) => {
           {loading ? (
             <p>Loading...</p>
           ) : (
-            <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
+            <Form layout="vertical" initialValues={defaultValues()} onFinish={saveEntity}>
               {!isNew ? (
-                <ValidatedField
-                  name="id"
-                  required
-                  readOnly
-                  id="device-id"
-                  label={translate('gatewaysApp.device.id')}
-                  validate={{ required: true }}
-                />
+                <Form.Item name="id" id="device-id" label={translate('gatewaysApp.device.id')} rules={[{ required: true }]}>
+                  <Input readOnly />
+                </Form.Item>
               ) : null}
-              <ValidatedField
+              <Form.Item id="device-gateway" name="gateway" label={translate('gatewaysApp.device.gateway')} rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+              <Form.Item
                 label={translate('gatewaysApp.device.uID')}
                 id="device-uID"
                 name="uID"
-                data-cy="uID"
-                type="text"
-                validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
-                  validate: v => isNumber(v) || translate('entity.validation.number'),
-                }}
-              />
-              <ValidatedField
+                // data-cy="uID"
+                rules={[
+                  { required: true, message: translate('entity.validation.required') },
+                  { type: 'number', message: translate('entity.validation.number') },
+                ]}
+              >
+                <Input data-cy="uID" />
+              </Form.Item>
+              <Form.Item
                 label={translate('gatewaysApp.device.vendor')}
                 id="device-vendor"
                 name="vendor"
-                data-cy="vendor"
-                type="text"
-                validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
-                }}
-              />
-              <ValidatedField
+                // data-cy="vendor"
+                rules={[{ required: true, message: translate('entity.validation.required') }]}
+              >
+                <Input data-cy="vendor" />
+              </Form.Item>
+              <Form.Item
                 label={translate('gatewaysApp.device.date')}
                 id="device-date"
                 name="date"
                 data-cy="date"
-                type="datetime-local"
-                placeholder="YYYY-MM-DD HH:mm"
-                validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
-                }}
-              />
-              <ValidatedField
+                rules={[{ required: true, message: translate('entity.validation.required') }]}
+              >
+                <DatePicker data-cy="date" format="YYYY-MM-DD" />
+              </Form.Item>
+              <Form.Item
                 label={translate('gatewaysApp.device.status')}
                 id="device-status"
                 name="status"
-                data-cy="status"
-                type="select"
+                // data-cy="status"
+                rules={[{ required: true, message: 'Please pick an item!' }]}
               >
-                {statusValues.map(status => (
-                  <option value={status} key={status}>
-                    {translate('gatewaysApp.Status.' + status)}
-                  </option>
-                ))}
-              </ValidatedField>
-              <ValidatedField
-                id="device-gateway"
-                name="gateway"
-                data-cy="gateway"
-                label={translate('gatewaysApp.device.gateway')}
-                type="select"
-              >
-                <option value="" key="0" />
-                {gateways
-                  ? gateways.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/device" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
-                &nbsp;
-                <span className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.back">Back</Translate>
-                </span>
+                <Radio.Group data-cy="status">
+                  {statusValues.map(status => (
+                    <Radio.Button value={status} key={status}>
+                      {translate('gatewaysApp.Status.' + status)}
+                    </Radio.Button>
+                  ))}
+                  <Radio.Button value="ONLINE">{translate('gatewaysApp.Status.' + statusValues[0])}</Radio.Button>
+                  <Radio.Button value="OFFLINE">{translate('gatewaysApp.Status.' + status)}</Radio.Button>
+                </Radio.Group>
+              </Form.Item>
+              <Button id="cancel-save" data-cy="entityCreateCancelButton" onClick={cancelClick} icon={<ArrowLeftOutlined />}>
+                <Translate contentKey="entity.action.back">Back</Translate>
               </Button>
-              &nbsp;
-              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
-                &nbsp;
+              <Button
+                type="primary"
+                id="save-entity"
+                data-cy="entityCreateSaveButton"
+                htmlType="submit"
+                disabled={updating}
+                icon={<SaveOutlined />}
+              >
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
-            </ValidatedForm>
+            </Form>
           )}
         </Col>
       </Row>

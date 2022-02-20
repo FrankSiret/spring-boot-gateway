@@ -3,7 +3,7 @@ import './home.scss';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
-import { Row, Col, Alert } from 'reactstrap';
+import { Row, Col, Alert } from 'antd';
 
 import { useAppSelector } from 'app/config/store';
 
@@ -12,19 +12,18 @@ export const Home = () => {
 
   return (
     <Row>
-      <Col md="3" className="pad">
-        <span className="hipster rounded" />
-      </Col>
-      <Col md="9">
+      <Col md="12">
         <h2>
-          <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
+          <Translate contentKey="home.title">Welcome to Gateway&apos;s Management</Translate>
         </h2>
         <p className="lead">
-          <Translate contentKey="home.subtitle">This is your homepage</Translate>
+          <Translate contentKey="home.subtitle">
+            A simple project of REST API with <span>Spring Boot</span>, <span>MySQL</span> and <span>ReactJS</span>.
+          </Translate>
         </p>
         {account?.login ? (
           <div>
-            <Alert color="success">
+            <Alert type="success">
               <Translate contentKey="home.logged.message" interpolate={{ username: account.login }}>
                 You are logged in as user {account.login}.
               </Translate>
@@ -32,7 +31,7 @@ export const Home = () => {
           </div>
         ) : (
           <div>
-            <Alert color="warning">
+            <Alert type="warning">
               <Translate contentKey="global.messages.info.authenticated.prefix">If you want to </Translate>
 
               <Link to="/login" className="alert-link">
@@ -44,54 +43,43 @@ export const Home = () => {
                 <br />- User (login=&quot;user&quot; and password=&quot;user&quot;).
               </Translate>
             </Alert>
-
-            <Alert color="warning">
-              <Translate contentKey="global.messages.info.register.noaccount">You do not have an account yet?</Translate>&nbsp;
-              <Link to="/account/register" className="alert-link">
-                <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
-              </Link>
-            </Alert>
           </div>
         )}
+
+        <h2>API</h2>
         <p>
-          <Translate contentKey="home.question">If you have any question on JHipster:</Translate>
+          <Translate contentKey="home.messages.api">You can check the API Documentation </Translate>
+          <a href="http://localhost:5000/api-docs/" rel="noreferrer" target="_blank">
+            <Translate contentKey="home.messages.here">here </Translate>
+          </a>
+          <Translate contentKey="home.messages.swagger">provided by </Translate>{' '}
+          <a href="https://swagger.io/" rel="noreferrer" target="_blank">
+            @Swagger
+          </a>
         </p>
 
+        <h2>
+          <Translate contentKey="home.messages.contact">Contact</Translate>
+        </h2>
+        <p>Frank Rodríguez Siret</p>
         <ul>
           <li>
-            <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.homepage">JHipster homepage</Translate>
+            <Translate contentKey="home.messages.contact.email">Email: </Translate>
+            frank.siret@gmail.com
+          </li>
+          <li>
+            Linkedin:{' '}
+            <a href="https://www.linkedin.com/in/frank-siret" rel="noreferrer" target="_blank">
+              Frank Rodríguez Siret
             </a>
           </li>
           <li>
-            <a href="https://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.stackoverflow">JHipster on Stack Overflow</Translate>
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.bugtracker">JHipster bug tracker</Translate>
-            </a>
-          </li>
-          <li>
-            <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.chat">JHipster public chat room</Translate>
-            </a>
-          </li>
-          <li>
-            <a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.follow">follow @jhipster on Twitter</Translate>
+            <Translate contentKey="home.messages.contact.website">Website: </Translate>
+            <a href="https://franksiret.github.io/resume-cv" rel="noreferrer" target="_blank">
+              <Translate contentKey="home.messages.contact.resume">Resume CV</Translate>
             </a>
           </li>
         </ul>
-
-        <p>
-          <Translate contentKey="home.like">If you like JHipster, do not forget to give us a star on</Translate>{' '}
-          <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>
-          !
-        </p>
       </Col>
     </Row>
   );
