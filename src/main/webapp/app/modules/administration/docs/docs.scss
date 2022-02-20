@@ -1,3 +1,7 @@
-iframe {
+iframe.api-docs {
   background: white;
+  border: none;
+  padding: 1.5rem;
+  padding-top: 0;
+  height: calc(100vh - 64px - 70px - 2rem);
 }

@@ -64,14 +64,14 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
   return (
     <div>
       <Row className="justify-content-center">
-        <Col md="8">
+        <Col md="12">
           <h2 id="gatewaysApp.gateway.home.createOrEditLabel" data-cy="GatewayCreateUpdateHeading">
             <Translate contentKey="gatewaysApp.gateway.home.createOrEditLabel">Create or edit a Gateway</Translate>
           </h2>
         </Col>
       </Row>
       <Row className="justify-content-center">
-        <Col md="8">
+        <Col md="12">
           {loading ? (
             <p>Loading...</p>
           ) : (

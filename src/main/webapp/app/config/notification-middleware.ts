@@ -1,8 +1,13 @@
+/* eslint-disable no-console */
 import { translate } from 'react-jhipster';
 import { toast } from 'react-toastify';
 import { isFulfilledAction, isRejectedAction } from 'app/shared/reducers/reducer.utils';
 
-const addErrorAlert = (message, key?, data?) => {
+const addErrorAlert = (message: string, key?, data?) => {
+  if (message.startsWith('Error occurred while trying to proxy:')) {
+    toast.error(message);
+    return;
+  }
   key = key ? key : message;
   toast.error(translate(key, data));
 };
@@ -71,7 +76,7 @@ export default () => next => action => {
                 // convert 'something[14].other[4].id' to 'something[].other[].id' so translations can be written to it
                 const convertedField = fieldError.field.replace(/\[\d*\]/g, '[]');
                 const fieldName = translate(`gatewaysApp.${fieldError.objectName}.${convertedField}`);
-                addErrorAlert(`Error on field "${fieldName}"`, `error.${fieldError.message}`, { fieldName });
+                addErrorAlert(`Error on field "${fieldName}"`, `error.${fieldError.field}.${fieldError.message}`, { fieldName });
               }
             } else if (typeof data === 'string' && data !== '') {
               addErrorAlert(data);

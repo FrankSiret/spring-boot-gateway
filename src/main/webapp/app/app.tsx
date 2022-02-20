@@ -7,7 +7,7 @@ import { Layout } from 'antd';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
-import { useAppDispatch } from 'app/config/store';
+import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getSession } from 'app/shared/reducers/authentication';
 import { getProfile } from 'app/shared/reducers/application-profile';
 import ErrorBoundary from 'app/shared/error/error-boundary';
@@ -26,6 +26,8 @@ export const App = () => {
     dispatch(getProfile());
   }, []);
 
+  const currentLocale = useAppSelector(state => state.locale.currentLocale);
+
   return (
     <Router basename={baseHref}>
       <Layout className="app">
@@ -40,7 +42,7 @@ export const App = () => {
             </Route>
           </Switch>
           <Footer className="app-footer">
-            Managment Gateways Test ©2022 Created by{' '}
+            Management Gateways Test ©2022 Created by{' '}
             <a href="https://github.com/FrankSiret/spring-boot-gateway" rel="noreferrer" target="_blank">
               FrankSiret
             </a>

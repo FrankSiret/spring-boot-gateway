@@ -1,0 +1,53 @@
+@import 'app/variant';
+
+.app-header {
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  display: flex;
+
+  .logo {
+    // float: left;
+    width: 100px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    &-avatar {
+      height: 42px;
+      width: 42px;
+      display: flex;
+      align-items: center;
+      background-color: $blue-color;
+    }
+
+    span {
+      font-size: large;
+      font-weight: 600;
+    }
+  }
+
+  .menu {
+    margin-right: auto;
+  }
+
+  .account {
+    &-menu {
+      color: $blue-color;
+      cursor: pointer;
+    }
+  }
+
+  .language {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40px;
+    margin-left: 1rem;
+    cursor: pointer;
+    span {
+      font-size: 1.2rem;
+    }
+    color: white;
+  }
+}

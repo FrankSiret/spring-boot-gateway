@@ -1,0 +1,51 @@
+@import-normalize;
+
+$warning-color: #faad14;
+$warning-color-hover: #ffc53d;
+$warning-color-active: #d48806;
+$warning-color-outline: #faad1433;
+$warning-color-deprecated-bg: #fffbe6;
+$warning-color-deprecated-border: #ffe58f;
+
+$blue-color: #1890ff;
+
+$black: #333333;
+
+* {
+  box-sizing: border-box;
+  &:after,
+  &::before {
+    box-sizing: border-box;
+  }
+}
+
+.browserupgrade {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+.shadow {
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+  border-radius: 2px;
+}
+
+.error {
+  color: white;
+  background-color: red;
+}
+
+.break {
+  white-space: normal;
+  word-break: break-all;
+}
+
+.break-word {
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.preserve-space {
+  white-space: pre-wrap;
+}

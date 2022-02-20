@@ -1,6 +1,10 @@
+/* eslint-disable no-console */
 import React from 'react';
 import { Translate, translate } from 'react-jhipster';
-import { Button, Modal, Alert, Form, Input, Checkbox } from 'antd';
+import { Button, Modal, Alert, Form, Input } from 'antd';
+import Password from 'antd/lib/input/Password';
+
+import './login.scss';
 
 export interface ILoginModalProps {
   showModal: boolean;
@@ -22,6 +26,10 @@ const LoginModal = (props: ILoginModalProps) => {
     formLogin.submit();
   };
 
+  const onKeyPress = e => {
+    if (e.key === 'Enter') loginClick();
+  };
+
   return (
     <Modal
       visible={props.showModal}
@@ -39,34 +47,34 @@ const LoginModal = (props: ILoginModalProps) => {
     >
       <>
         {loginError ? (
-          <Alert type="error" data-cy="loginError">
-            <Translate contentKey="login.messages.error.authentication">
-              <strong>Failed to sign in!</strong> Please check your credentials and try again.
-            </Translate>
-          </Alert>
+          <Alert
+            type="error"
+            data-cy="loginError"
+            className="error-authentication"
+            message={
+              <Translate contentKey="login.messages.error.authentication">
+                <strong>Failed to sign in!</strong> Please check your credentials and try again.
+              </Translate>
+            }
+          />
         ) : null}
-        <Form onFinish={login} form={formLogin} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+        <Form onFinish={login} form={formLogin} labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} autoComplete="off">
           <Form.Item
             name="username"
             label={translate('global.form.username.label')}
             // data-cy="username"
-            rules={[{ required: true, message: translate('login.required.username') }]} // 'Please input your username!'
+            rules={[{ required: true, message: translate('login.required.username') }]}
           >
-            <Input data-cy="username" autoFocus placeholder={translate('global.form.username.placeholder')} />
+            <Input data-cy="username" autoFocus placeholder={translate('global.form.username.placeholder')} onKeyPress={onKeyPress} />
           </Form.Item>
           <Form.Item
             name="password"
             label={translate('login.form.password')}
             // data-cy="password"
-            rules={[{ required: true, message: translate('login.required.password') }]} // 'Please input your password!'
+            rules={[{ required: true, message: translate('login.required.password') }]}
           >
-            <Input data-cy="password" placeholder={translate('login.form.password.placeholder')} />
+            <Password data-cy="password" placeholder={translate('login.form.password.placeholder')} onKeyPress={onKeyPress} />
           </Form.Item>
-          {/* <Form.Item name="rememberMe" wrapperCol={{ offset: 8, span: 16 }}>
-            <Checkbox>
-              <Translate contentKey="login.form.rememberme">Remember me</Translate>
-            </Checkbox>
-          </Form.Item> */}
         </Form>
       </>
     </Modal>

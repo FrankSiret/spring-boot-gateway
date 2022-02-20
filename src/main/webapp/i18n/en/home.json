@@ -1,7 +1,7 @@
 {
   "home": {
-    "title": "Welcome, Java Hipster!",
-    "subtitle": "This is your homepage",
+    "title": "Welcome to Gateway's management!",
+    "subtitle": "A simple project of REST API with <span>Spring Boot</span>, <span>MySQL</span> and <span>ReactJS</span>.",
     "logged": {
       "message": "You are logged in as user \"{{username}}\"."
     },
@@ -14,6 +14,15 @@
       "follow": "follow @jhipster on Twitter"
     },
     "like": "If you like JHipster, don't forget to give us a star on",
-    "github": "GitHub"
+    "github": "GitHub",
+    "messages": {
+      "api": "You can check the API Documentation ",
+      "here": "here ",
+      "swagger": "provided by ",
+      "contact": "Contact",
+      "contact.email": "Email: ",
+      "contact.website": "Website: ",
+      "contact.resume": "Resume CV"
+    }
   }
 }

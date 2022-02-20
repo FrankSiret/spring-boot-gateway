@@ -13,7 +13,7 @@ import { AUTHORITIES } from 'app/config/constants';
 import { Alert, Spin } from 'antd';
 
 const Admin = Loadable({
-  loader: () => import(/* webpackChunkName: "administration" */ 'app/modules/administration'),
+  loader: () => import('app/modules/administration'),
   loading: () => (
     <Spin tip="">
       <Alert message="Loading ..." />

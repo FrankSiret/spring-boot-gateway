@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Avatar, Layout, Menu } from 'antd';
-import { HomeOutlined, GatewayOutlined, ApiOutlined } from '@ant-design/icons';
+import { Avatar, Dropdown, Layout, Menu } from 'antd';
+import { DownOutlined, GlobalOutlined, HomeOutlined, GatewayOutlined, ApiOutlined } from '@ant-design/icons';
 import { languages } from 'app/config/translation';
-import { Storage, Translate } from 'react-jhipster';
+import { Storage, translate, Translate } from 'react-jhipster';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { setLocale } from 'app/shared/reducers/locale';
 
-// import './appMenu.scss'
+import './menu.scss';
 
 const { Header } = Layout;
 
@@ -17,55 +17,67 @@ const AppMenu = () => {
   const dispatch = useAppDispatch();
   const currentLocale = useAppSelector(state => state.locale.currentLocale);
   const isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated);
+  const account = useAppSelector(state => state.authentication.account);
 
-  const handleLocaleChange = langKey => {
+  const handleLocaleChange = () => {
+    const langKey = currentLocale === 'en' ? 'es' : 'en';
     Storage.session.set('locale', langKey);
     dispatch(setLocale(langKey));
   };
+
+  const languageName = useCallback(() => (currentLocale === 'en' ? languages.es.name : languages.en.name), [currentLocale]);
+  const languageKey = useCallback(() => (currentLocale === 'en' ? 'ES' : 'EN'), [currentLocale]);
 
   useEffect(() => {
     const l = location.pathname.split('/');
     if (location.pathname === '' || location.pathname === '/') setSelectedKeys(['home']);
     else if (l.length > 1 && l[1] === 'gateway') setSelectedKeys(['gateway']);
-    else if (l.length > 1 && l[1] === 'api') setSelectedKeys(['api']);
+    else if (l.length > 1 && l[1] === 'admin') setSelectedKeys(['api']);
   }, [location.pathname]);
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="0">
+        <Link to="/logout">
+          <Translate contentKey="global.menu.account.logout">Sign out</Translate>
+        </Link>
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <Header className="app-header">
       <div className="logo">
-        <Avatar>G</Avatar>
+        <Link to="/">
+          <Avatar className="logo-avatar">G</Avatar>
+        </Link>
       </div>
-      <Menu theme="dark" mode="horizontal" selectedKeys={selectedKeys}>
+      <Menu theme="dark" mode="horizontal" selectedKeys={selectedKeys} className="menu">
         <Menu.Item key="home" icon={<HomeOutlined />}>
-          <NavLink to="/">Home</NavLink>
+          <NavLink to="/">{translate('global.menu.home')}</NavLink>
         </Menu.Item>
         <Menu.Item key="gateway" icon={<GatewayOutlined />}>
           <NavLink to="/gateway">Gateway</NavLink>
         </Menu.Item>
         <Menu.Item key="api" icon={<ApiOutlined />}>
-          <NavLink to="/admin/api">API</NavLink>
+          <NavLink to="/admin/docs">API</NavLink>
         </Menu.Item>
       </Menu>
-      {currentLocale === 'en' && (
-        <div title={languages.es.name} className="language" onClick={() => handleLocaleChange('es')}>
-          <Avatar>ES</Avatar>
-        </div>
-      )}
-      {currentLocale === 'es' && (
-        <div title={languages.en.name} className="language" onClick={() => handleLocaleChange('en')}>
-          <Avatar>EN</Avatar>
-        </div>
-      )}
       <div className="account">
         {isAuthenticated ? (
-          <Link to={'/logout'}>
-            <Translate contentKey="global.menu.account.logout">Sign out</Translate>
-          </Link>
+          <Dropdown overlay={menu} trigger={['click']}>
+            <span className="account-menu">
+              {account.login} <DownOutlined />
+            </span>
+          </Dropdown>
         ) : (
           <Link to={'/login'}>
             <Translate contentKey="global.menu.account.login">Sign in</Translate>
           </Link>
         )}
+      </div>
+      <div title={languageName()} className="language" onClick={handleLocaleChange}>
+        <GlobalOutlined /> {languageKey()}
       </div>
     </Header>
   );

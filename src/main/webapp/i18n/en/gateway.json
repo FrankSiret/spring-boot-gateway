@@ -22,6 +22,9 @@
       "name": "Name",
       "ipAddress": "Ip Address",
       "device": "Device"
+    },
+    "loginVM": {
+      "password": "Password"
     }
   }
 }

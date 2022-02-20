@@ -1,8 +1,9 @@
 import React, { useLayoutEffect } from 'react';
 
+import { translate } from 'react-jhipster';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { logout } from 'app/shared/reducers/authentication';
-import { Translate } from 'react-jhipster';
+import { Alert } from 'antd';
 
 export const Logout = () => {
   const logoutUrl = useAppSelector(state => state.authentication.logoutUrl);
@@ -16,10 +17,10 @@ export const Logout = () => {
   });
 
   return (
-    <div className="p-5">
-      <h4>
-        <Translate contentKey="global.logout">Logged out successfully!</Translate>
-      </h4>
+    <div className="app-page">
+      <div className="site-layout-content">
+        <Alert message={translate('global.logout')} />
+      </div>
     </div>
   );
 };

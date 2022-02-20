@@ -79,14 +79,14 @@ export const DeviceUpdate = (props: RouteComponentProps<{ id: string }>) => {
   return (
     <div>
       <Row className="justify-content-center">
-        <Col md="8">
+        <Col md="12">
           <h2 id="gatewaysApp.device.home.createOrEditLabel" data-cy="DeviceCreateUpdateHeading">
             <Translate contentKey="gatewaysApp.device.home.createOrEditLabel">Create or edit a Device</Translate>
           </h2>
         </Col>
       </Row>
       <Row className="justify-content-center">
-        <Col md="8">
+        <Col md="12">
           {loading ? (
             <p>Loading...</p>
           ) : (

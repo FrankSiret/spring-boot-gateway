@@ -26,7 +26,7 @@ export const DeviceDetail = (props: RouteComponentProps<{ id: string }>) => {
   const deviceEntity = useAppSelector(state => state.device.entity);
   return (
     <Row>
-      <Col md="8">
+      <Col md="12">
         <h2 data-cy="deviceDetailsHeading">
           <Translate contentKey="gatewaysApp.device.detail.title">Device</Translate>
         </h2>

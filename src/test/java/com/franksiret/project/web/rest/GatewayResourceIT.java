@@ -38,8 +38,8 @@ class GatewayResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_IP_ADDRESS = "220.255.09021";
-    private static final String UPDATED_IP_ADDRESS = "200253253207";
+    private static final String DEFAULT_IP_ADDRESS = "192.168.1.1";
+    private static final String UPDATED_IP_ADDRESS = "192.168.1.2";
 
     private static final String ENTITY_API_URL = "/api/gateways";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
