@@ -12,8 +12,4 @@ import org.mapstruct.*;
 public interface DeviceMapper extends EntityMapper<DeviceDTO, Device> {
     @Mapping(target = "gateway", source = "gateway", qualifiedByName = "id")
     DeviceDTO toDto(Device s);
-
-    @Named("idSet")
-    @Mapping(target = "gateway", source = "gateway", ignore = true)
-    DeviceDTO toDtoIdSet(Device s);
 }

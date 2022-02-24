@@ -4,7 +4,7 @@ import { Button, Row, Col, Form, Input, Spin, Alert, Space } from 'antd';
 import { isNumber, Translate, translate } from 'react-jhipster';
 import { SaveOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 
-import { getEntity, updateEntity, createEntity, reset } from './gateway.reducer';
+import { getEntity, updateEntity, createEntity, reset, getDevices } from './gateway.reducer';
 import { IGateway } from 'app/shared/model/gateway.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
@@ -34,10 +34,6 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
       dispatch(getEntity(props.match.params.id));
     }
   }, []);
-
-  const onUpdate = () => {
-    dispatch(getEntity(props.match.params.id));
-  };
 
   useEffect(() => {
     if (updateSuccess) {
@@ -148,7 +144,7 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
             </Space>
-            {!isNew && <GatewayDevice id={gatewayEntity?.id} devices={gatewayEntity?.devices} onUpdate={onUpdate} />}
+            {!isNew && gatewayEntity?.id && <GatewayDevice id={gatewayEntity?.id} />}
           </Space>
         )}
       </div>

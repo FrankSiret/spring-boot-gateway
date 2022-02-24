@@ -25,7 +25,7 @@ const DeviceStatus: FC<IDeviceStatusProps> = ({ gatewayId, record, onUpdate }) =
     setLoading(true);
     dispatch(updateEntity(device)).then(() => {
       setLoading(false);
-      onUpdate();
+      onUpdate && onUpdate();
     });
   };
 

@@ -4,6 +4,7 @@ import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/t
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { IGateway, defaultValue } from 'app/shared/model/gateway.model';
+import { IDevice } from 'app/shared/model/device.model';
 
 const initialState: EntityState<IGateway> = {
   loading: false,
@@ -13,6 +14,8 @@ const initialState: EntityState<IGateway> = {
   updating: false,
   totalItems: 0,
   updateSuccess: false,
+  devices: [],
+  devicesLoading: false,
 };
 
 const apiUrl = 'api/gateways';
@@ -29,6 +32,15 @@ export const getEntity = createAsyncThunk(
   async (id: string) => {
     const requestUrl = `${apiUrl}/${id}`;
     return axios.get<IGateway>(requestUrl);
+  },
+  { serializeError: serializeAxiosError }
+);
+
+export const getDevices = createAsyncThunk(
+  'gateway/fetch_devices',
+  async (id: string) => {
+    const requestUrl = `${apiUrl}/${id}/devices`;
+    return axios.get<IDevice>(requestUrl);
   },
   { serializeError: serializeAxiosError }
 );
@@ -84,6 +96,13 @@ export const GatewaySlice = createEntitySlice({
       .addCase(getEntity.fulfilled, (state, action) => {
         state.loading = false;
         state.entity = action.payload.data;
+      })
+      .addCase(getDevices.pending, state => {
+        state.devicesLoading = true;
+      })
+      .addCase(getDevices.fulfilled, (state, action) => {
+        state.devicesLoading = false;
+        state.devices = action.payload.data;
       })
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false;

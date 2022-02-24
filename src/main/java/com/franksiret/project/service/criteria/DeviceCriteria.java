@@ -8,8 +8,8 @@ import tech.jhipster.service.filter.BooleanFilter;
 import tech.jhipster.service.filter.DoubleFilter;
 import tech.jhipster.service.filter.Filter;
 import tech.jhipster.service.filter.FloatFilter;
-import tech.jhipster.service.filter.InstantFilter;
 import tech.jhipster.service.filter.IntegerFilter;
+import tech.jhipster.service.filter.LocalDateFilter;
 import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.service.filter.StringFilter;
 import tech.jhipster.service.filter.UUIDFilter;
@@ -50,7 +50,7 @@ public class DeviceCriteria implements Serializable, Criteria {
 
     private StringFilter vendor;
 
-    private InstantFilter date;
+    private LocalDateFilter date;
 
     private StatusFilter status;
 
@@ -120,18 +120,18 @@ public class DeviceCriteria implements Serializable, Criteria {
         this.vendor = vendor;
     }
 
-    public InstantFilter getDate() {
+    public LocalDateFilter getDate() {
         return date;
     }
 
-    public InstantFilter date() {
+    public LocalDateFilter date() {
         if (date == null) {
-            date = new InstantFilter();
+            date = new LocalDateFilter();
         }
         return date;
     }
 
-    public void setDate(InstantFilter date) {
+    public void setDate(LocalDateFilter date) {
         this.date = date;
     }
 

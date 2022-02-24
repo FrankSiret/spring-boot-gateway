@@ -11,16 +11,14 @@ import { ColumnsType } from 'antd/lib/table';
 import Title from 'antd/lib/typography/Title';
 import AddModal from './add-modal';
 import DeviceStatus from 'app/shared/components/device-status';
+import { getDevices } from 'app/entities/gateway/gateway.reducer';
 const { Panel } = Collapse;
 
 export interface IGatewayDevices {
   id: string;
-  devices: IDevice[];
-  loading?: boolean;
-  onUpdate?: () => void;
 }
 
-export const GatewayDevice: FC<IGatewayDevices> = ({ id, devices, loading, onUpdate }) => {
+export const GatewayDevice: FC<IGatewayDevices> = ({ id }) => {
   const dispatch = useAppDispatch();
 
   const location = useLocation();
@@ -29,15 +27,31 @@ export const GatewayDevice: FC<IGatewayDevices> = ({ id, devices, loading, onUpd
 
   const [selectedEntity, setSelectedEntity] = useState<IDevice>(null);
 
+  useEffect(() => {
+    onUpdate();
+  }, []);
+
+  const loading: boolean = useAppSelector(state => state.gateway.devicesLoading);
+  const devices: IDevice[] = useAppSelector(state => state.gateway.devices);
+
+  const onUpdate = () => {
+    dispatch(getDevices(id));
+  };
+
   const addClick = e => {
     e.stopPropagation();
     setSelectedEntity({});
     setOpenAdd(true);
   };
 
+  const syncClick = e => {
+    e.stopPropagation();
+    onUpdate();
+  };
+
   const acceptAdd = () => {
-    onUpdate && onUpdate();
     setOpenAdd(false);
+    onUpdate();
   };
 
   const cancelAdd = () => {
@@ -90,7 +104,7 @@ export const GatewayDevice: FC<IGatewayDevices> = ({ id, devices, loading, onUpd
       </Tooltip>
       <Divider className="divider" />
       <Tooltip title={translate('gatewaysApp.device.home.refreshListLabel')}>
-        <Button onClick={onUpdate} icon={<SyncOutlined spin={loading} />} shape="circle" />
+        <Button onClick={syncClick} icon={<SyncOutlined spin={loading} />} shape="circle" />
       </Tooltip>
     </Space>
   );

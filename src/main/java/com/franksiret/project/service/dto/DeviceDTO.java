@@ -2,7 +2,7 @@ package com.franksiret.project.service.dto;
 
 import com.franksiret.project.domain.enumeration.Status;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 import javax.validation.constraints.*;
@@ -21,7 +21,7 @@ public class DeviceDTO implements Serializable {
     private String vendor;
 
     @NotNull
-    private Instant date;
+    private LocalDate date;
 
     @NotNull
     private Status status;
@@ -52,11 +52,11 @@ public class DeviceDTO implements Serializable {
         this.vendor = vendor;
     }
 
-    public Instant getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Instant date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

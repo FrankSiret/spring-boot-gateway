@@ -30,7 +30,12 @@ const AddModal: FC<IAddModalProps> = ({ isNew, entity, gatewayId, visible, onOk,
     const newEntity: IDevice = {
       ...entity,
       ...values,
-      gateway: { id: gatewayId },
+      gateway: {
+        id: '44d72ccd-44d0-4b29-88b1-db1756095100',
+        ipAddress: '10.30.24.2',
+        name: 'gateway1',
+        serialNumber: '0001',
+      },
     };
 
     setLoading(true);
@@ -99,7 +104,7 @@ const AddModal: FC<IAddModalProps> = ({ isNew, entity, gatewayId, visible, onOk,
           name="date"
           rules={[{ required: true, message: translate('entity.validation.required') }]}
         >
-          <DatePicker allowClear showTime />
+          <DatePicker allowClear />
         </Form.Item>
         <Form.Item
           label={translate('gatewaysApp.device.status')}

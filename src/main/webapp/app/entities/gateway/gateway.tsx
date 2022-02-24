@@ -96,12 +96,6 @@ export const Gateway = (props: RouteComponentProps<{ url: string }>) => {
     { key: 'name', dataIndex: 'name', title: <Translate contentKey="gatewaysApp.gateway.name">Name</Translate> },
     { key: 'ipAddress', dataIndex: 'ipAddress', title: <Translate contentKey="gatewaysApp.gateway.ipAddress">Ip Address</Translate> },
     {
-      key: 'devices',
-      dataIndex: 'devices',
-      title: <Translate contentKey="gatewaysApp.gateway.devices">Configured Devices</Translate>,
-      render: devices => <div>{devices?.length}</div>,
-    },
-    {
       key: 'action',
       title: <Translate contentKey="gatewaysApp.gateway.action">Action</Translate>,
       width: 90,

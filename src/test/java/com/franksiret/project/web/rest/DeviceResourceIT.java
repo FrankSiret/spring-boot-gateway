@@ -13,8 +13,8 @@ import com.franksiret.project.repository.DeviceRepository;
 import com.franksiret.project.service.criteria.DeviceCriteria;
 import com.franksiret.project.service.dto.DeviceDTO;
 import com.franksiret.project.service.mapper.DeviceMapper;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.EntityManager;
@@ -42,8 +42,9 @@ class DeviceResourceIT {
     private static final String DEFAULT_VENDOR = "AAAAAAAAAA";
     private static final String UPDATED_VENDOR = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_DATE = LocalDate.ofEpochDay(-1L);
 
     private static final Status DEFAULT_STATUS = Status.ONLINE;
     private static final Status UPDATED_STATUS = Status.OFFLINE;
@@ -483,6 +484,58 @@ class DeviceResourceIT {
 
         // Get all the deviceList where date is null
         defaultDeviceShouldNotBeFound("date.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllDevicesByDateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        deviceRepository.saveAndFlush(device);
+
+        // Get all the deviceList where date is greater than or equal to DEFAULT_DATE
+        defaultDeviceShouldBeFound("date.greaterThanOrEqual=" + DEFAULT_DATE);
+
+        // Get all the deviceList where date is greater than or equal to UPDATED_DATE
+        defaultDeviceShouldNotBeFound("date.greaterThanOrEqual=" + UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllDevicesByDateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        deviceRepository.saveAndFlush(device);
+
+        // Get all the deviceList where date is less than or equal to DEFAULT_DATE
+        defaultDeviceShouldBeFound("date.lessThanOrEqual=" + DEFAULT_DATE);
+
+        // Get all the deviceList where date is less than or equal to SMALLER_DATE
+        defaultDeviceShouldNotBeFound("date.lessThanOrEqual=" + SMALLER_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllDevicesByDateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        deviceRepository.saveAndFlush(device);
+
+        // Get all the deviceList where date is less than DEFAULT_DATE
+        defaultDeviceShouldNotBeFound("date.lessThan=" + DEFAULT_DATE);
+
+        // Get all the deviceList where date is less than UPDATED_DATE
+        defaultDeviceShouldBeFound("date.lessThan=" + UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllDevicesByDateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        deviceRepository.saveAndFlush(device);
+
+        // Get all the deviceList where date is greater than DEFAULT_DATE
+        defaultDeviceShouldNotBeFound("date.greaterThan=" + DEFAULT_DATE);
+
+        // Get all the deviceList where date is greater than SMALLER_DATE
+        defaultDeviceShouldBeFound("date.greaterThan=" + SMALLER_DATE);
     }
 
     @Test

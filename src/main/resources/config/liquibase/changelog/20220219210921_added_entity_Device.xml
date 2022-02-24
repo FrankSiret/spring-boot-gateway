@@ -20,7 +20,7 @@
             <column name="vendor" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="date" type="${datetimeType}">
+            <column name="date" type="date">
                 <constraints nullable="false" />
             </column>
             <column name="status" type="varchar(255)">
@@ -31,7 +31,6 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="device" columnName="date" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

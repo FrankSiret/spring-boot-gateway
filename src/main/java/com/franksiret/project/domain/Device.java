@@ -3,7 +3,7 @@ package com.franksiret.project.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.franksiret.project.domain.enumeration.Status;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -37,7 +37,7 @@ public class Device implements Serializable {
 
     @NotNull
     @Column(name = "date", nullable = false)
-    private Instant date;
+    private LocalDate date;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -89,16 +89,16 @@ public class Device implements Serializable {
         this.vendor = vendor;
     }
 
-    public Instant getDate() {
+    public LocalDate getDate() {
         return this.date;
     }
 
-    public Device date(Instant date) {
+    public Device date(LocalDate date) {
         this.setDate(date);
         return this;
     }
 
-    public void setDate(Instant date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

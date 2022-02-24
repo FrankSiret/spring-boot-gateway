@@ -7,12 +7,10 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Gateway} and its DTO {@link GatewayDTO}.
  */
-@Mapper(componentModel = "spring", uses = { DeviceMapper.class })
+@Mapper(componentModel = "spring", uses = {})
 public interface GatewayMapper extends EntityMapper<GatewayDTO, Gateway> {
-    @Mapping(target = "devices", source = "devices", qualifiedByName = "idSet")
-    GatewayDTO toDto(Gateway gateway);
-
     @Named("id")
-    @Mapping(target = "devices", source = "devices", ignore = true)
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
     GatewayDTO toDtoId(Gateway gateway);
 }

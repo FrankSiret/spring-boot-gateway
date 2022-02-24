@@ -1,9 +1,13 @@
 package com.franksiret.project.web.rest;
 
+import com.franksiret.project.domain.Device;
+import com.franksiret.project.domain.Gateway;
+import com.franksiret.project.repository.DeviceRepository;
 import com.franksiret.project.repository.GatewayRepository;
 import com.franksiret.project.service.GatewayQueryService;
 import com.franksiret.project.service.GatewayService;
 import com.franksiret.project.service.criteria.GatewayCriteria;
+import com.franksiret.project.service.dto.DeviceDTO;
 import com.franksiret.project.service.dto.GatewayDTO;
 import com.franksiret.project.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -47,10 +51,18 @@ public class GatewayResource {
 
     private final GatewayQueryService gatewayQueryService;
 
-    public GatewayResource(GatewayService gatewayService, GatewayRepository gatewayRepository, GatewayQueryService gatewayQueryService) {
+    private final DeviceRepository deviceRepository;
+
+    public GatewayResource(
+        GatewayService gatewayService,
+        GatewayRepository gatewayRepository,
+        GatewayQueryService gatewayQueryService,
+        DeviceRepository deviceRepository
+    ) {
         this.gatewayService = gatewayService;
         this.gatewayRepository = gatewayRepository;
         this.gatewayQueryService = gatewayQueryService;
+        this.deviceRepository = deviceRepository;
     }
 
     /**
@@ -65,6 +77,9 @@ public class GatewayResource {
         log.debug("REST request to save Gateway : {}", gatewayDTO);
         if (gatewayDTO.getId() != null) {
             throw new BadRequestAlertException("A new gateway cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (gatewayRepository.existsBySerialNumber(gatewayDTO.getSerialNumber())) {
+            throw new BadRequestAlertException("Serial number already exist", ENTITY_NAME, "serialnumbercloned");
         }
         GatewayDTO result = gatewayService.save(gatewayDTO);
         return ResponseEntity
@@ -98,6 +113,11 @@ public class GatewayResource {
 
         if (!gatewayRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        List<Gateway> serialNumberList = gatewayRepository.findBySerialNumber(gatewayDTO.getSerialNumber());
+        boolean matchSerialNumber = serialNumberList.stream().anyMatch(gateway -> gateway.getId() != id);
+        if (matchSerialNumber) {
+            throw new BadRequestAlertException("Serial number already exist", ENTITY_NAME, "serialnumbercloned");
         }
 
         GatewayDTO result = gatewayService.save(gatewayDTO);
@@ -133,6 +153,11 @@ public class GatewayResource {
 
         if (!gatewayRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        List<Gateway> serialNumberList = gatewayRepository.findBySerialNumber(gatewayDTO.getSerialNumber());
+        boolean matchSerialNumber = serialNumberList.stream().anyMatch(gateway -> gateway.getId() != id);
+        if (matchSerialNumber) {
+            throw new BadRequestAlertException("Serial number already exist", ENTITY_NAME, "serialnumbercloned");
         }
 
         Optional<GatewayDTO> result = gatewayService.partialUpdate(gatewayDTO);
@@ -200,5 +225,18 @@ public class GatewayResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /gateways/:id/devices} : get all devices from a gateway.
+     *
+     * @param id the id of the gatewayDTO.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of devices in body.
+     */
+    @GetMapping("/gateways/{id}/devices")
+    public ResponseEntity<List<Device>> getAllDevices(@PathVariable UUID id) {
+        log.debug("REST request to get all Devices from the gateway: {}", id);
+        List<Device> devices = deviceRepository.findByGateway_Id(id);
+        return ResponseEntity.ok().body(devices);
     }
 }

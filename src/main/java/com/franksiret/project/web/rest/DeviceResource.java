@@ -1,5 +1,7 @@
 package com.franksiret.project.web.rest;
 
+import com.franksiret.project.domain.Device;
+import com.franksiret.project.domain.Gateway;
 import com.franksiret.project.repository.DeviceRepository;
 import com.franksiret.project.service.DeviceQueryService;
 import com.franksiret.project.service.DeviceService;
@@ -66,6 +68,16 @@ public class DeviceResource {
         if (deviceDTO.getId() != null) {
             throw new BadRequestAlertException("A new device cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if (deviceRepository.existsByUID(deviceDTO.getuID())) {
+            throw new BadRequestAlertException("UID already exist", ENTITY_NAME, "uidcloned");
+        }
+        if (deviceDTO.getGateway() != null && deviceDTO.getGateway().getId() != null) {
+            long count = deviceRepository.countByGateway_Id(deviceDTO.getGateway().getId());
+            if (count >= 10) {
+                throw new BadRequestAlertException("No more than 10 devices are allowed", ENTITY_NAME, "maxdevices");
+            }
+        }
+
         DeviceDTO result = deviceService.save(deviceDTO);
         return ResponseEntity
             .created(new URI("/api/devices/" + result.getId()))
@@ -98,6 +110,17 @@ public class DeviceResource {
 
         if (!deviceRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        List<Device> UIDList = deviceRepository.findByUID(deviceDTO.getuID());
+        boolean matchSerialNumber = UIDList.stream().anyMatch(gateway -> gateway.getId() != id);
+        if (matchSerialNumber) {
+            throw new BadRequestAlertException("UID already exist", ENTITY_NAME, "uidcloned");
+        }
+        if (deviceDTO.getGateway() != null && deviceDTO.getGateway().getId() != null) {
+            long count = deviceRepository.countByGateway_Id(deviceDTO.getGateway().getId());
+            if (count >= 10) {
+                throw new BadRequestAlertException("No more than 10 devices are allowed", ENTITY_NAME, "maxdevices");
+            }
         }
 
         DeviceDTO result = deviceService.save(deviceDTO);
@@ -133,6 +156,11 @@ public class DeviceResource {
 
         if (!deviceRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        List<Device> UIDList = deviceRepository.findByUID(deviceDTO.getuID());
+        boolean matchSerialNumber = UIDList.stream().anyMatch(gateway -> gateway.getId() != id);
+        if (matchSerialNumber) {
+            throw new BadRequestAlertException("UID already exist", ENTITY_NAME, "uidcloned");
         }
 
         Optional<DeviceDTO> result = deviceService.partialUpdate(deviceDTO);
