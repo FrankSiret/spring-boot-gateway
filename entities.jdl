@@ -14,7 +14,7 @@ entity Device {
 	id UUID,
 	UID Integer required unique,
 	vendor String required,
-	date Instant required,
+	date LocalDate required,
 	status Status required
 }
 

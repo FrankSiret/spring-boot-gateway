@@ -1,9 +1,7 @@
 package com.franksiret.project.service.dto;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import javax.validation.constraints.*;
 
