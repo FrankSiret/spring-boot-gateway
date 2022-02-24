@@ -8,6 +8,8 @@ import DeviceDetail from './device-detail';
 import DeviceUpdate from './device-update';
 import DeviceDeleteDialog from './device-delete-dialog';
 
+import './device.scss';
+
 const Routes = ({ match }) => (
   <>
     <Switch>

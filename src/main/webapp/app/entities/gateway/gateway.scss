@@ -1,0 +1,29 @@
+.gateway {
+  width: 100%;
+}
+.gateway-update {
+  width: 100%;
+  &__body {
+    width: 100%;
+  }
+  .gateway-devices__header-panel {
+    .ant-collapse-header {
+      align-items: center;
+    }
+    .gateway-devices__header {
+      width: 100%;
+      h4 {
+        margin-bottom: 0.3rem;
+      }
+      .divider {
+        margin: auto;
+      }
+      :nth-last-child(2) {
+        width: 100%;
+      }
+    }
+  }
+}
+.gateway-info {
+  width: 100%;
+}

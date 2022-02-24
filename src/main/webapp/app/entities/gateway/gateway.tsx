@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link, NavLink, RouteComponentProps } from 'react-router-dom';
 import { Button, Space, Table } from 'antd';
 import { Translate, getSortState, translate } from 'react-jhipster';
 import { SyncOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -11,6 +11,8 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.cons
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { ColumnsType } from 'antd/lib/table';
+import Title from 'antd/lib/typography/Title';
+import PageHeaderTitle from 'app/shared/layout/page-header-title';
 
 export const Gateway = (props: RouteComponentProps<{ url: string }>) => {
   const dispatch = useAppDispatch();
@@ -86,78 +88,96 @@ export const Gateway = (props: RouteComponentProps<{ url: string }>) => {
 
   const columns: ColumnsType<IGateway> = [
     {
-      key: 'id',
-      dataIndex: 'id',
-      title: <Translate contentKey="gatewaysApp.gateway.id">Id</Translate>,
-      render: id => <a href={`${match.url}/${id}`}>{id}</a>,
-    },
-    {
       key: 'serialNumber',
       dataIndex: 'serialNumber',
       title: <Translate contentKey="gatewaysApp.gateway.serialNumber">Serial Number</Translate>,
+      render: (_serialNumber, record) => <Link to={`${match.url}/${record.id}`}>{record.serialNumber}</Link>,
     },
     { key: 'name', dataIndex: 'name', title: <Translate contentKey="gatewaysApp.gateway.name">Name</Translate> },
     { key: 'ipAddress', dataIndex: 'ipAddress', title: <Translate contentKey="gatewaysApp.gateway.ipAddress">Ip Address</Translate> },
     {
       key: 'devices',
+      dataIndex: 'devices',
       title: <Translate contentKey="gatewaysApp.gateway.devices">Configured Devices</Translate>,
       render: devices => <div>{devices?.length}</div>,
     },
     {
       key: 'action',
       title: <Translate contentKey="gatewaysApp.gateway.action">Action</Translate>,
+      width: 90,
       render: (_text, gateway) => (
-        <Space size="middle">
-          <Button
-            href={`${match.url}/${gateway.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-            type="primary"
-            size="small"
-            data-cy="entityEditButton"
-            icon={<EditOutlined />}
-            title={translate('entity.action.edit', {}, 'Edit')}
+        <Space size="small">
+          <Link
+            to={`${match.url}/${gateway.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
           >
-            {/* <Translate contentKey="entity.action.edit">Edit</Translate> */}
-          </Button>
-          <Button
-            href={`${match.url}/${gateway.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-            danger
-            size="small"
-            data-cy="entityEditButton"
-            icon={<DeleteOutlined />}
-            title={translate('entity.action.delete', {}, 'Delete')}
+            <Button
+              type="primary"
+              size="small"
+              data-cy="entityEditButton"
+              icon={<EditOutlined />}
+              title={translate('entity.action.edit')}
+            ></Button>
+          </Link>
+          <Link
+            to={`${match.url}/${gateway.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
           >
-            {/* <Translate contentKey="entity.action.delete">Delete</Translate> */}
-          </Button>
+            <Button
+              danger
+              size="small"
+              data-cy="entityEditButton"
+              icon={<DeleteOutlined />}
+              title={translate('entity.action.delete')}
+            ></Button>
+          </Link>
         </Space>
       ),
     },
   ];
 
+  const routes = [
+    {
+      path: '/',
+      breadcrumbName: 'Home',
+    },
+    {
+      path: '/gateway',
+      breadcrumbName: translate('gatewaysApp.gateway.home.title'),
+    },
+  ];
+
+  const textRangePagination = (total, range) => (
+    <Translate contentKey="entity.pagination.showtotal" interpolate={{ from: range[0], to: range[1], total }} />
+  );
+
   return (
-    <div>
-      <h2 id="gateway-heading" data-cy="GatewayHeading">
-        <Translate contentKey="gatewaysApp.gateway.home.title">Gateways</Translate>
-        <div className="d-flex justify-content-end">
-          <Button onClick={handleSyncList} disabled={loading} icon={<SyncOutlined spin={loading} />}>
+    <Space size="middle" direction="vertical" className="gateway">
+      <PageHeaderTitle
+        className="gateway__heading"
+        title={<Title level={2}>{translate('gatewaysApp.gateway.home.title')}</Title>}
+        subtitle={translate('gatewaysApp.gateway.home.subtitle')}
+        buttons={[
+          <Button key="sync" onClick={handleSyncList} disabled={loading} icon={<SyncOutlined spin={loading} />}>
             <Translate contentKey="gatewaysApp.gateway.home.refreshListLabel">Refresh List</Translate>
-          </Button>
-          <Button onClick={addClick} id="jh-create-entity" data-cy="entityCreateButton" icon={<PlusOutlined />}>
+          </Button>,
+          <Button key="create" onClick={addClick} id="jh-create-entity" data-cy="entityCreateButton" icon={<PlusOutlined />}>
             <Translate contentKey="gatewaysApp.gateway.home.createLabel">Create new Gateway</Translate>
-          </Button>
-        </div>
-      </h2>
+          </Button>,
+        ]}
+        routes={routes}
+      />
       <Table
         columns={columns}
         dataSource={gatewayList}
+        rowKey={record => record.id}
         pagination={{
-          showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+          showTotal: textRangePagination,
           current: paginationState.activePage,
           onChange: handlePagination,
           defaultPageSize: 20,
           total: totalItems,
         }}
       />
-    </div>
+    </Space>
   );
 };
 

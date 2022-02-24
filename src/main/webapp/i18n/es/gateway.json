@@ -3,25 +3,30 @@
     "gateway": {
       "home": {
         "title": "Gateways",
+        "subtitle": "Lista de Gateways",
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Crear nuevo Gateway",
+        "editLabel": "Editar una Gateway",
         "createOrEditLabel": "Crear o editar Gateway",
-        "notFound": "Ningún Gateways encontrado"
+        "notFound": "No se han encontrado Gateways"
       },
       "created": "Un nuevo Gateway ha sido creado con el identificador {{ param }}",
       "updated": "Un Gateway ha sido actualizado con el identificador {{ param }}",
       "deleted": "Un Gateway ha sido eliminado con el identificador {{ param }}",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Gateway {{ id }}?"
+        "question": "¿Seguro que quiere eliminar la Gateway <strong>{{ id }}</strong>?"
       },
       "detail": {
-        "title": "Gateway"
+        "title": "Gateway",
+        "subtitle": "Información del Gateway"
       },
       "id": "Id",
-      "serialNumber": "Serial Number",
-      "name": "Name",
-      "ipAddress": "Ip Address",
-      "device": "Device"
+      "serialNumber": "Número de Serie",
+      "name": "Nombre",
+      "ipAddress": "Dirección Ip",
+      "device": "Dispositivo",
+      "devices": "Dispositivos",
+      "action": "Acción"
     },
     "loginVM": {
       "password": "Password"

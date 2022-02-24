@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Form, Input } from 'antd';
+import { Button, Row, Col, Form, Input, Spin, Alert, Space } from 'antd';
 import { isNumber, Translate, translate } from 'react-jhipster';
 import { SaveOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 
@@ -9,6 +9,9 @@ import { IGateway } from 'app/shared/model/gateway.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
+import Title from 'antd/lib/typography/Title';
+import PageHeaderTitle from 'app/shared/layout/page-header-title';
+import GatewayDevice from 'app/shared/components/gateway-devices';
 
 export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch();
@@ -19,6 +22,7 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const loading = useAppSelector(state => state.gateway.loading);
   const updating = useAppSelector(state => state.gateway.updating);
   const updateSuccess = useAppSelector(state => state.gateway.updateSuccess);
+
   const handleClose = () => {
     props.history.push('/gateway' + props.location.search);
   };
@@ -30,6 +34,10 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
       dispatch(getEntity(props.match.params.id));
     }
   }, []);
+
+  const onUpdate = () => {
+    dispatch(getEntity(props.match.params.id));
+  };
 
   useEffect(() => {
     if (updateSuccess) {
@@ -61,31 +69,43 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
     props.history.replace('/gateway');
   };
 
+  const title = isNew ? translate('gatewaysApp.gateway.home.createLabel') : translate('gatewaysApp.gateway.home.editLabel');
+
+  const routes = [
+    {
+      path: '/',
+      breadcrumbName: 'Home',
+    },
+    {
+      path: '/gateway',
+      breadcrumbName: translate('gatewaysApp.gateway.home.title'),
+    },
+    {
+      path: isNew ? '/gateway/new' : `/gateway/${gatewayEntity.id}/edit`,
+      breadcrumbName: title,
+    },
+  ];
+
   return (
-    <div>
-      <Row className="justify-content-center">
-        <Col md="12">
-          <h2 id="gatewaysApp.gateway.home.createOrEditLabel" data-cy="GatewayCreateUpdateHeading">
-            <Translate contentKey="gatewaysApp.gateway.home.createOrEditLabel">Create or edit a Gateway</Translate>
-          </h2>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md="12">
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
+    <Space direction="vertical" className="gateway-update">
+      <PageHeaderTitle
+        className="gateway-update__heading"
+        title={<Title level={2}>{title}</Title>}
+        subtitle={translate('gatewaysApp.gateway.home.createOrEditLabel')}
+        routes={routes}
+      />
+      <div>
+        {loading ? (
+          <Spin tip="">
+            <Alert message={translate('global.loading')}></Alert>
+          </Spin>
+        ) : (
+          <Space direction="vertical" size="middle" className="gateway-update__body">
             <Form layout="vertical" initialValues={defaultValues()} onFinish={saveEntity}>
-              {!isNew ? (
-                <Form.Item name="id" id="gateway-id" label={translate('gatewaysApp.gateway.id')} rules={[{ required: true }]}>
-                  <Input readOnly />
-                </Form.Item>
-              ) : null}
               <Form.Item
                 label={translate('gatewaysApp.gateway.serialNumber')}
                 id="gateway-serialNumber"
                 name="serialNumber"
-                // data-cy="serialNumber"
                 rules={[{ required: true, message: translate('entity.validation.required') }]}
               >
                 <Input data-cy="serialNumber" />
@@ -94,7 +114,6 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 label={translate('gatewaysApp.gateway.name')}
                 id="gateway-name"
                 name="name"
-                // data-cy="name"
                 rules={[{ required: true, message: translate('entity.validation.required') }]}
               >
                 <Input data-cy="name" />
@@ -103,20 +122,18 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 label={translate('gatewaysApp.gateway.ipAddress')}
                 id="gateway-ipAddress"
                 name="ipAddress"
-                // data-cy="ipAddress"
                 rules={[
                   { required: true, message: translate('entity.validation.required') },
                   {
-                    type: 'regexp',
                     pattern: /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/,
-                    message: translate('entity.validation.pattern', {
-                      pattern: '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.|$)){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$',
-                    }),
+                    message: translate('entity.validation.pattern'),
                   },
                 ]}
               >
                 <Input data-cy="ipAddress" />
               </Form.Item>
+            </Form>
+            <Space size="middle">
               <Button id="cancel-save" data-cy="entityCreateCancelButton" onClick={cancelClick} icon={<ArrowLeftOutlined />}>
                 <Translate contentKey="entity.action.back">Back</Translate>
               </Button>
@@ -130,11 +147,12 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
               >
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
-            </Form>
-          )}
-        </Col>
-      </Row>
-    </div>
+            </Space>
+            {!isNew && <GatewayDevice id={gatewayEntity?.id} devices={gatewayEntity?.devices} onUpdate={onUpdate} />}
+          </Space>
+        )}
+      </div>
+    </Space>
   );
 };
 

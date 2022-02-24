@@ -14,7 +14,7 @@ const PageNotFound = () => {
     <Result
       status="404"
       title="404"
-      subTitle={translate('Sorry, the page you visited does not exist.')}
+      subTitle={translate('global.404')}
       extra={
         <Button type="primary" onClick={backClick}>
           Back Home

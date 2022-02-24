@@ -51,6 +51,7 @@ public class CacheConfiguration {
             createCache(cm, com.franksiret.project.domain.Gateway.class.getName());
             createCache(cm, com.franksiret.project.domain.Gateway.class.getName() + ".devices");
             createCache(cm, com.franksiret.project.domain.Device.class.getName());
+            createCache(cm, com.franksiret.project.domain.Device.class.getName() + ".gateway");
             // jhipster-needle-ehcache-add-entry
         };
     }

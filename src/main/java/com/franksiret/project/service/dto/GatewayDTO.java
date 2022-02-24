@@ -1,7 +1,9 @@
 package com.franksiret.project.service.dto;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import javax.validation.constraints.*;
 
@@ -21,6 +23,9 @@ public class GatewayDTO implements Serializable {
     @NotNull
     @Pattern(regexp = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.|$)){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
     private String ipAddress;
+
+    @Size(max = 10)
+    private Set<DeviceDTO> devices = new HashSet<>();
 
     public UUID getId() {
         return id;
@@ -52,6 +57,14 @@ public class GatewayDTO implements Serializable {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    public Set<DeviceDTO> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(Set<DeviceDTO> devices) {
+        this.devices = devices;
     }
 
     @Override

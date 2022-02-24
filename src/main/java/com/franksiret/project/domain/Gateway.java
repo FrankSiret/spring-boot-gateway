@@ -40,6 +40,7 @@ public class Gateway implements Serializable {
     @Column(name = "ip_address", nullable = false)
     private String ipAddress;
 
+    @Size(max = 10)
     @OneToMany(mappedBy = "gateway")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "gateway" }, allowSetters = true)

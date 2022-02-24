@@ -3,8 +3,10 @@
     "gateway": {
       "home": {
         "title": "Gateways",
+        "subtitle": "List of Gateways",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Gateway",
+        "editLabel": "Edit a Gateway",
         "createOrEditLabel": "Create or edit a Gateway",
         "notFound": "No Gateways found"
       },
@@ -12,16 +14,19 @@
       "updated": "A Gateway is updated with identifier {{ param }}",
       "deleted": "A Gateway is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Gateway {{ id }}?"
+        "question": "Are you sure you want to delete Gateway <strong>{{ id }}</strong>?"
       },
       "detail": {
-        "title": "Gateway"
+        "title": "Gateway",
+        "subtitle": "Gateway's info"
       },
       "id": "Id",
       "serialNumber": "Serial Number",
       "name": "Name",
       "ipAddress": "Ip Address",
-      "device": "Device"
+      "device": "Device",
+      "devices": "Devices",
+      "action": "Action"
     },
     "loginVM": {
       "password": "Password"

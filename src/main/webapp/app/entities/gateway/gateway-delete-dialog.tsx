@@ -56,14 +56,9 @@ export const GatewayDeleteDialog = (props: RouteComponentProps<{ id: string }>) 
           <Translate contentKey="entity.action.delete">Delete</Translate>
         </Button>,
       ]}
-      closeIcon={
-        <Button onClick={handleClose} data-cy="gatewayDeleteDialogHeading">
-          X
-        </Button>
-      }
     >
       <div id="gatewaysApp.gateway.delete.question">
-        <Translate contentKey="gatewaysApp.gateway.delete.question" interpolate={{ id: gatewayEntity.id }}>
+        <Translate contentKey="gatewaysApp.gateway.delete.question" interpolate={{ id: gatewayEntity.name }}>
           Are you sure you want to delete this Gateway?
         </Translate>
       </div>

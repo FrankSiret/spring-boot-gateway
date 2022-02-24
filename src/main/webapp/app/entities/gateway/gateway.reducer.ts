@@ -26,7 +26,7 @@ export const getEntities = createAsyncThunk('gateway/fetch_entity_list', async (
 
 export const getEntity = createAsyncThunk(
   'gateway/fetch_entity',
-  async (id: string | number) => {
+  async (id: string) => {
     const requestUrl = `${apiUrl}/${id}`;
     return axios.get<IGateway>(requestUrl);
   },
@@ -65,7 +65,7 @@ export const partialUpdateEntity = createAsyncThunk(
 
 export const deleteEntity = createAsyncThunk(
   'gateway/delete_entity',
-  async (id: string | number, thunkAPI) => {
+  async (id: string, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`;
     const result = await axios.delete<IGateway>(requestUrl);
     thunkAPI.dispatch(getEntities({}));

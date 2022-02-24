@@ -1,0 +1,27 @@
+.device {
+  width: 100%;
+}
+.device-update {
+  width: 100%;
+  &__body {
+    width: 100%;
+  }
+}
+.device-status {
+  box-sizing: content-box;
+  border: 1px solid;
+}
+.device-status__online {
+  background: #f6ffed;
+  border-color: #b7eb8f;
+  span {
+    color: #389e0d !important;
+  }
+}
+.device-status__offline {
+  background: #fff2e8;
+  border-color: #ffbb96;
+  span {
+    color: #d4380d !important;
+  }
+}

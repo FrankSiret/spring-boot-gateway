@@ -3,6 +3,8 @@
     "title": "Gateways",
     "browsehappy": "Está usando un navegador <strong>no actualizado</strong>. Por favor, <a href=\"http://browsehappy.com/?locale=es\">actualice su navegador</a> para mejorar su experiencia.",
     "logout": "¡Sessión cerrada satisfactoriamente!",
+    "loading": "Cargando ...",
+    "404": "Ups, la página solicitada no existe.",
     "menu": {
       "home": "Inicio",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
@@ -117,9 +119,12 @@
       "max": "Este campo no puede ser mayor que {{max}}.",
       "minbytes": "Este campo debe tener como mínimo {{min}} bytes.",
       "maxbytes": "Este campo no puede tener más de {{max}} bytes.",
-      "pattern": "Este campo debe seguir el patrón {{pattern}}.",
+      "pattern": "Este campo debe ser una dirección Ip válida.",
       "number": "Este campo debe ser un número.",
       "datetimelocal": "Este campo debe ser una fecha y hora."
+    },
+    "pagination": {
+      "showtotal": "{{ from }}-{{ to }} de {{ total }} elementos"
     }
   },
   "error": {

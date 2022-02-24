@@ -1,16 +1,21 @@
+/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Space, Table, Tag } from 'antd';
+import { Button, Space, Switch, Table, Tag } from 'antd';
 import { Translate, TextFormat, getSortState, translate } from 'react-jhipster';
 import { SyncOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Status } from 'app/shared/model/enumerations/status.model';
 
-import { getEntities } from './device.reducer';
+import { getEntities, updateEntity } from './device.reducer';
 import { IDevice } from 'app/shared/model/device.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { ColumnsType } from 'antd/lib/table';
+import Title from 'antd/lib/typography/Title';
+import PageHeaderTitle from 'app/shared/layout/page-header-title';
+import DeviceStatus from '../../shared/components/device-status';
 
 export const Device = (props: RouteComponentProps<{ url: string }>) => {
   const dispatch = useAppDispatch();
@@ -86,12 +91,11 @@ export const Device = (props: RouteComponentProps<{ url: string }>) => {
 
   const columns: ColumnsType<IDevice> = [
     {
-      key: 'id',
-      dataIndex: 'id',
-      title: <Translate contentKey="gatewaysApp.device.id">Id</Translate>,
-      render: id => <a href={`${match.url}/${id}`}>{id}</a>,
+      key: 'uID',
+      dataIndex: 'uID',
+      title: <Translate contentKey="gatewaysApp.device.uID">UID</Translate>,
+      render: (uID, record) => <Link to={`${match.url}/${record.id}`}>{uID}</Link>,
     },
-    { key: 'uID', dataIndex: 'uID', title: <Translate contentKey="gatewaysApp.device.uID">UID</Translate> },
     { key: 'vendor', dataIndex: 'vendor', title: <Translate contentKey="gatewaysApp.device.vendor">Vendor</Translate> },
     {
       key: 'date',
@@ -102,68 +106,92 @@ export const Device = (props: RouteComponentProps<{ url: string }>) => {
     {
       key: 'status',
       title: <Translate contentKey="gatewaysApp.device.status">Status</Translate>,
-      render: status => <Tag color={status.toUpperCase() === 'ONLINE' ? 'volcano' : 'green'}>{status.toUpperCase()}</Tag>,
+      dataIndex: 'status',
+      render: (_status, record) => <DeviceStatus gatewayId={record.gateway?.id} record={record} />,
     },
     {
       key: 'gateway',
       title: <Translate contentKey="gatewaysApp.device.gateway">Gateway</Translate>,
-      render: gateway => <a href={`gateway/${gateway.id}`}>{gateway.id}</a>,
+      dataIndex: 'gateway',
+      render: (gateway, record) => (record?.gateway?.id ? <Link to={`/gateway/${record.gateway.id}`}>{record.gateway.name}</Link> : null),
     },
     {
       key: 'action',
       title: <Translate contentKey="gatewaysApp.device.action">Action</Translate>,
+      width: 90,
       render: (_text, gateway) => (
-        <Space size="middle">
-          <Button
-            href={`${match.url}/${gateway.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-            type="primary"
-            size="small"
-            data-cy="entityEditButton"
-            icon={<EditOutlined />}
-            title={translate('entity.action.edit', {}, 'Edit')}
+        <Space size="small">
+          <Link
+            to={`${match.url}/${gateway.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
           >
-            {/* <Translate contentKey="entity.action.edit">Edit</Translate> */}
-          </Button>
-          <Button
-            href={`${match.url}/${gateway.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-            danger
-            size="small"
-            data-cy="entityEditButton"
-            icon={<DeleteOutlined />}
-            title={translate('entity.action.delete', {}, 'Delete')}
+            <Button
+              type="primary"
+              size="small"
+              data-cy="entityEditButton"
+              icon={<EditOutlined />}
+              title={translate('entity.action.edit', {}, 'Edit')}
+            />
+          </Link>
+          <Link
+            to={`${match.url}/${gateway.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
           >
-            {/* <Translate contentKey="entity.action.delete">Delete</Translate> */}
-          </Button>
+            <Button
+              danger
+              size="small"
+              data-cy="entityEditButton"
+              icon={<DeleteOutlined />}
+              title={translate('entity.action.delete', {}, 'Delete')}
+            />
+          </Link>
         </Space>
       ),
     },
   ];
 
+  const routes = [
+    {
+      path: '/',
+      breadcrumbName: 'Home',
+    },
+    {
+      path: '/device',
+      breadcrumbName: translate('gatewaysApp.device.home.title'),
+    },
+  ];
+
+  const textRangePagination = (total, range) => (
+    <Translate contentKey="entity.pagination.showtotal" interpolate={{ from: range[0], to: range[1], total }} />
+  );
+
   return (
-    <div>
-      <h2 id="device-heading" data-cy="DeviceHeading">
-        <Translate contentKey="gatewaysApp.device.home.title">Devices</Translate>
-        <div className="d-flex justify-content-end">
-          <Button onClick={handleSyncList} disabled={loading} icon={<SyncOutlined spin={loading} />}>
+    <Space size="middle" direction="vertical" className="device">
+      <PageHeaderTitle
+        className="device__heading"
+        title={<Title level={2}>{translate('gatewaysApp.device.home.title')}</Title>}
+        subtitle={translate('gatewaysApp.device.home.subtitle')}
+        buttons={[
+          <Button key="sync" onClick={handleSyncList} disabled={loading} icon={<SyncOutlined spin={loading} />}>
             <Translate contentKey="gatewaysApp.device.home.refreshListLabel">Refresh List</Translate>
-          </Button>
-          <Button onClick={addClick} id="jh-create-entity" data-cy="entityCreateButton" icon={<PlusOutlined />}>
+          </Button>,
+          <Button key="create" onClick={addClick} id="jh-create-entity" data-cy="entityCreateButton" icon={<PlusOutlined />}>
             <Translate contentKey="gatewaysApp.device.home.createLabel">Create new Device</Translate>
-          </Button>
-        </div>
-      </h2>
+          </Button>,
+        ]}
+        routes={routes}
+      />
       <Table
         columns={columns}
         dataSource={deviceList}
+        rowKey={record => record.id}
         pagination={{
-          showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+          showTotal: textRangePagination,
           current: paginationState.activePage,
           onChange: handlePagination,
           defaultPageSize: 20,
           total: totalItems,
         }}
       />
-    </div>
+    </Space>
   );
 };
 

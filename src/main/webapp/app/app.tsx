@@ -31,23 +31,25 @@ export const App = () => {
   return (
     <Router basename={baseHref}>
       <Layout className="app">
-        <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast" />
+        <ToastContainer position={toast.POSITION.BOTTOM_LEFT} className="toastify-container" toastClassName="toastify-toast" />
         <AppMenu />
-        <Content>
-          <Switch>
-            <Route path="/">
-              <ErrorBoundary>
-                <AppRoutes />
-              </ErrorBoundary>
-            </Route>
-          </Switch>
-          <Footer className="app-footer">
-            Management Gateways Test ©2022 Created by{' '}
-            <a href="https://github.com/FrankSiret/spring-boot-gateway" rel="noreferrer" target="_blank">
-              FrankSiret
-            </a>
-          </Footer>
+        <Content className="app-page">
+          <div className="site-layout-content">
+            <Switch>
+              <Route path="/">
+                <ErrorBoundary>
+                  <AppRoutes />
+                </ErrorBoundary>
+              </Route>
+            </Switch>
+          </div>
         </Content>
+        <Footer className="app-footer">
+          Management Gateways Test ©2022 Created by{' '}
+          <a href="https://github.com/FrankSiret/spring-boot-gateway" rel="noreferrer" target="_blank">
+            FrankSiret
+          </a>
+        </Footer>
       </Layout>
     </Router>
   );

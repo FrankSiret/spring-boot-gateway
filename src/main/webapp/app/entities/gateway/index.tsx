@@ -8,6 +8,8 @@ import GatewayDetail from './gateway-detail';
 import GatewayUpdate from './gateway-update';
 import GatewayDeleteDialog from './gateway-delete-dialog';
 
+import './gateway.scss';
+
 const Routes = ({ match }) => (
   <>
     <Switch>

@@ -3,6 +3,7 @@
     "device": {
       "home": {
         "title": "Devices",
+        "subtitle": "List of Devices",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Device",
         "createOrEditLabel": "Create or edit a Device",
@@ -12,17 +13,19 @@
       "updated": "A Device is updated with identifier {{ param }}",
       "deleted": "A Device is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Device {{ id }}?"
+        "question": "Are you sure you want to delete Device <strong>{{ id }}</strong>?"
       },
       "detail": {
-        "title": "Device"
+        "title": "Device",
+        "subtitle": "Device's info"
       },
       "id": "Id",
-      "uID": "U ID",
+      "uID": "UID",
       "vendor": "Vendor",
-      "date": "Date",
+      "date": "Date created",
       "status": "Status",
-      "gateway": "Gateway"
+      "gateway": "Gateway",
+      "action": "Action"
     }
   }
 }

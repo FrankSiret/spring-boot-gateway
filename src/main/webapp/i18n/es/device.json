@@ -2,27 +2,30 @@
   "gatewaysApp": {
     "device": {
       "home": {
-        "title": "Devices",
+        "title": "Dispositivos",
+        "subtitle": "Lista de Dispositivos",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Device",
-        "createOrEditLabel": "Crear o editar Device",
-        "notFound": "Ningún Devices encontrado"
+        "createLabel": "Crear nuevo Dispositivo",
+        "createOrEditLabel": "Crear o editar Dispositivo",
+        "notFound": "No se han encontrado Dispositivos"
       },
-      "created": "Un nuevo Device ha sido creado con el identificador {{ param }}",
-      "updated": "Un Device ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Device ha sido eliminado con el identificador {{ param }}",
+      "created": "Un nuevo Dispositivo ha sido creado con el identificador {{ param }}",
+      "updated": "Un Dispositivo ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Dispositivo ha sido eliminado con el identificador {{ param }}",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Device {{ id }}?"
+        "question": "¿Seguro que quiere eliminar el Dispositivo <strong>{{ id }}</strong>?"
       },
       "detail": {
-        "title": "Device"
+        "title": "Dispositivo",
+        "subtitle": "Información del Dispositivo"
       },
       "id": "Id",
-      "uID": "U ID",
+      "uID": "UID",
       "vendor": "Vendor",
-      "date": "Date",
-      "status": "Status",
-      "gateway": "Gateway"
+      "date": "Fecha de creación",
+      "status": "Estado",
+      "gateway": "Gateway",
+      "action": "Acción"
     }
   }
 }

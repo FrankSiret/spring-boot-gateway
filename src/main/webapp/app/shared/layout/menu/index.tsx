@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Avatar, Dropdown, Layout, Menu } from 'antd';
-import { DownOutlined, GlobalOutlined, HomeOutlined, GatewayOutlined, ApiOutlined } from '@ant-design/icons';
+import { PartitionOutlined, DownOutlined, GlobalOutlined, HomeOutlined, GatewayOutlined, ApiOutlined } from '@ant-design/icons';
 import { languages } from 'app/config/translation';
 import { Storage, translate, Translate } from 'react-jhipster';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
@@ -31,8 +31,9 @@ const AppMenu = () => {
   useEffect(() => {
     const l = location.pathname.split('/');
     if (location.pathname === '' || location.pathname === '/') setSelectedKeys(['home']);
+    else if (location.pathname === '/admin/docs') setSelectedKeys(['api']);
     else if (l.length > 1 && l[1] === 'gateway') setSelectedKeys(['gateway']);
-    else if (l.length > 1 && l[1] === 'admin') setSelectedKeys(['api']);
+    else if (l.length > 1 && l[1] === 'device') setSelectedKeys(['device']);
   }, [location.pathname]);
 
   const menu = (
@@ -58,6 +59,11 @@ const AppMenu = () => {
         </Menu.Item>
         <Menu.Item key="gateway" icon={<GatewayOutlined />}>
           <NavLink to="/gateway">Gateway</NavLink>
+        </Menu.Item>
+        <Menu.Item key="device" icon={<PartitionOutlined />}>
+          <NavLink to="/device">
+            <Translate contentKey="gatewaysApp.gateway.device">Device</Translate>
+          </NavLink>
         </Menu.Item>
         <Menu.Item key="api" icon={<ApiOutlined />}>
           <NavLink to="/admin/docs">API</NavLink>

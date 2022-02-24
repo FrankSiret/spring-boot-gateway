@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col } from 'antd';
-import { Translate } from 'react-jhipster';
+import { Button, Row, Col, Space } from 'antd';
+import { translate, Translate } from 'react-jhipster';
 import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons';
 
 import { getEntity } from './gateway.reducer';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
+import PageHeaderTitle from 'app/shared/layout/page-header-title';
+import Title from 'antd/lib/typography/Title';
 
 export const GatewayDetail = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch();
@@ -24,8 +26,32 @@ export const GatewayDetail = (props: RouteComponentProps<{ id: string }>) => {
   };
 
   const gatewayEntity = useAppSelector(state => state.gateway.entity);
+
+  const title = translate('gatewaysApp.gateway.detail.title');
+
+  const routes = [
+    {
+      path: '/',
+      breadcrumbName: 'Home',
+    },
+    {
+      path: '/gateway',
+      breadcrumbName: translate('gatewaysApp.gateway.home.title'),
+    },
+    {
+      path: `/gateway/${gatewayEntity.id}`,
+      breadcrumbName: title,
+    },
+  ];
+
   return (
-    <Row>
+    <Space direction="vertical" className="gateway-info">
+      <PageHeaderTitle
+        className="gateway-info__heading"
+        title={<Title level={2}>{title}</Title>}
+        subtitle={translate('gatewaysApp.gateway.detail.subtitle')}
+        routes={routes}
+      />
       <Col md="12">
         <h2 data-cy="gatewayDetailsHeading">
           <Translate contentKey="gatewaysApp.gateway.detail.title">Gateway</Translate>
@@ -56,14 +82,14 @@ export const GatewayDetail = (props: RouteComponentProps<{ id: string }>) => {
           </dt>
           <dd>{gatewayEntity.ipAddress}</dd>
         </dl>
-        <Button data-cy="entityDetailsBackButton" onClick={backClick} icon={<ArrowLeftOutlined />}>
+        {/* <Button data-cy="entityDetailsBackButton" onClick={backClick} icon={<ArSpaceLeftOutlined />}>
           <Translate contentKey="entity.action.back">Back</Translate>
         </Button>
         <Button type="primary" onClick={editClick} icon={<EditOutlined />}>
           <Translate contentKey="entity.action.edit">Edit</Translate>
-        </Button>
+        </Button> */}
       </Col>
-    </Row>
+    </Space>
   );
 };
 
