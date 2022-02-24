@@ -91,17 +91,17 @@ export const Device = (props: RouteComponentProps<{ url: string }>) => {
 
   const columns: ColumnsType<IDevice> = [
     {
-      key: 'uID',
-      dataIndex: 'uID',
-      title: <Translate contentKey="gatewaysApp.device.uID">UID</Translate>,
-      render: (uID, record) => <Link to={`${match.url}/${record.id}`}>{uID}</Link>,
+      key: 'uid',
+      dataIndex: 'uid',
+      title: <Translate contentKey="gatewaysApp.device.uid">UID</Translate>,
+      render: (uid, record) => <Link to={`${match.url}/${record.id}`}>{uid}</Link>,
     },
     { key: 'vendor', dataIndex: 'vendor', title: <Translate contentKey="gatewaysApp.device.vendor">Vendor</Translate> },
     {
       key: 'date',
       dataIndex: 'date',
       title: <Translate contentKey="gatewaysApp.device.date">Date</Translate>,
-      render: date => (date ? <TextFormat type="date" value={date} format={APP_DATE_FORMAT} /> : null),
+      render: date => (date ? <TextFormat type="date" value={date} format={APP_LOCAL_DATE_FORMAT} /> : null),
     },
     {
       key: 'status',

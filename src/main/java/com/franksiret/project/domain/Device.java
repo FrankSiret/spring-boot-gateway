@@ -28,8 +28,8 @@ public class Device implements Serializable {
     private UUID id;
 
     @NotNull
-    @Column(name = "u_id", nullable = false, unique = true)
-    private Integer uID;
+    @Column(name = "uid", nullable = false, unique = true)
+    private Integer uid;
 
     @NotNull
     @Column(name = "vendor", nullable = false)
@@ -44,8 +44,7 @@ public class Device implements Serializable {
     @Column(name = "status", nullable = false)
     private Status status;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "devices" }, allowSetters = true)
+    @ManyToOne(optional = false)
     private Gateway gateway;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -63,17 +62,17 @@ public class Device implements Serializable {
         this.id = id;
     }
 
-    public Integer getuID() {
-        return this.uID;
+    public Integer getUid() {
+        return this.uid;
     }
 
-    public Device uID(Integer uID) {
-        this.setuID(uID);
+    public Device uid(Integer uid) {
+        this.setUid(uid);
         return this;
     }
 
-    public void setuID(Integer uID) {
-        this.uID = uID;
+    public void setUid(Integer uid) {
+        this.uid = uid;
     }
 
     public String getVendor() {
@@ -152,7 +151,7 @@ public class Device implements Serializable {
     public String toString() {
         return "Device{" +
             "id=" + getId() +
-            ", uID=" + getuID() +
+            ", uid=" + getUid() +
             ", vendor='" + getVendor() + "'" +
             ", date='" + getDate() + "'" +
             ", status='" + getStatus() + "'" +

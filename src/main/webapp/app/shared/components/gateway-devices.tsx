@@ -12,6 +12,8 @@ import Title from 'antd/lib/typography/Title';
 import AddModal from './add-modal';
 import DeviceStatus from 'app/shared/components/device-status';
 import { getDevices } from 'app/entities/gateway/gateway.reducer';
+import { IGateway } from '../model/gateway.model';
+import DeleteModal from './delete-modal';
 const { Panel } = Collapse;
 
 export interface IGatewayDevices {
@@ -24,6 +26,8 @@ export const GatewayDevice: FC<IGatewayDevices> = ({ id }) => {
   const location = useLocation();
 
   const [openAdd, setOpenAdd] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
 
   const [selectedEntity, setSelectedEntity] = useState<IDevice>(null);
 
@@ -44,6 +48,18 @@ export const GatewayDevice: FC<IGatewayDevices> = ({ id }) => {
     setOpenAdd(true);
   };
 
+  const editClick = (record: IGateway) => e => {
+    e.stopPropagation();
+    setSelectedEntity({ ...record });
+    setOpenEdit(true);
+  };
+
+  const deleteClick = (record: IGateway) => e => {
+    e.stopPropagation();
+    setSelectedEntity({ ...record });
+    setOpenDelete(true);
+  };
+
   const syncClick = e => {
     e.stopPropagation();
     onUpdate();
@@ -58,14 +74,32 @@ export const GatewayDevice: FC<IGatewayDevices> = ({ id }) => {
     setOpenAdd(false);
   };
 
+  const acceptEdit = () => {
+    setOpenEdit(false);
+    onUpdate();
+  };
+
+  const cancelEdit = () => {
+    setOpenEdit(false);
+  };
+
+  const acceptDelete = () => {
+    setOpenDelete(false);
+    onUpdate();
+  };
+
+  const cancelDelete = () => {
+    setOpenDelete(false);
+  };
+
   const columns: ColumnsType<IDevice> = [
-    { key: 'uID', dataIndex: 'uID', title: <Translate contentKey="gatewaysApp.device.uID">UID</Translate> },
+    { key: 'uid', dataIndex: 'uid', title: <Translate contentKey="gatewaysApp.device.uid">UID</Translate> },
     { key: 'vendor', dataIndex: 'vendor', title: <Translate contentKey="gatewaysApp.device.vendor">Vendor</Translate> },
     {
       key: 'date',
       dataIndex: 'date',
       title: <Translate contentKey="gatewaysApp.device.date">Date</Translate>,
-      render: date => (date ? <TextFormat type="date" value={date} format={APP_DATE_FORMAT} /> : null),
+      render: date => (date ? <TextFormat type="date" value={date} format={APP_LOCAL_DATE_FORMAT} /> : null),
     },
     {
       key: 'status',
@@ -77,18 +111,14 @@ export const GatewayDevice: FC<IGatewayDevices> = ({ id }) => {
       key: 'action',
       title: <Translate contentKey="gatewaysApp.device.action">Action</Translate>,
       width: 90,
-      render: (_text, gateway) => (
+      render: (_text, record) => (
         <Space size="small">
-          <Link to={`/device/${gateway.id}/edit${location.search}`}>
-            <Button
-              type="primary"
-              size="small"
-              data-cy="entityEditButton"
-              icon={<EditOutlined />}
-              title={translate('entity.action.edit')}
-            />
-          </Link>
-          <Button danger size="small" data-cy="entityEditButton" icon={<DeleteOutlined />} title={translate('entity.action.delete')} />
+          <Tooltip title={translate('entity.action.edit')}>
+            <Button type="primary" size="small" icon={<EditOutlined />} onClick={editClick(record)} />
+          </Tooltip>
+          <Tooltip title={translate('entity.action.delete')}>
+            <Button danger size="small" icon={<DeleteOutlined />} onClick={deleteClick(record)} />
+          </Tooltip>
         </Space>
       ),
     },
@@ -115,6 +145,8 @@ export const GatewayDevice: FC<IGatewayDevices> = ({ id }) => {
         <Table columns={columns} dataSource={devices} pagination={false} rowKey={record => record.id} scroll={{ y: 400 }} />
       </Panel>
       <AddModal isNew gatewayId={id} visible={openAdd} onOk={acceptAdd} onCancel={cancelAdd} />
+      {selectedEntity && <AddModal entity={selectedEntity} gatewayId={id} visible={openEdit} onOk={acceptEdit} onCancel={cancelEdit} />}
+      {selectedEntity && <DeleteModal entity={selectedEntity} visible={openDelete} onOk={acceptDelete} onCancel={cancelDelete} />}
     </Collapse>
   );
 };

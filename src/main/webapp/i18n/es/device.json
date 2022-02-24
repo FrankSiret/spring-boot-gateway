@@ -20,7 +20,7 @@
         "subtitle": "Información del Dispositivo"
       },
       "id": "Id",
-      "uID": "UID",
+      "uid": "UID",
       "vendor": "Vendor",
       "date": "Fecha de creación",
       "status": "Estado",

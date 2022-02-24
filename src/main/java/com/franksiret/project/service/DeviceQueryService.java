@@ -90,8 +90,8 @@ public class DeviceQueryService extends QueryService<Device> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildSpecification(criteria.getId(), Device_.id));
             }
-            if (criteria.getuID() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getuID(), Device_.uID));
+            if (criteria.getUid() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getUid(), Device_.uid));
             }
             if (criteria.getVendor() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getVendor(), Device_.vendor));

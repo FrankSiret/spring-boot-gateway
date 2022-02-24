@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import React, { FC, useState } from 'react';
-import { DatePicker, Form, Input, Modal, Radio } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
+import { DatePicker, Form, Input, Modal, Radio, Select } from 'antd';
 import { useAppDispatch } from 'app/config/store';
 import { createEntity, updateEntity } from '../../entities/device/device.reducer';
 import { IDevice } from 'app/shared/model/device.model';
@@ -8,6 +8,8 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { Status } from 'app/shared/model/enumerations/status.model';
 import { translate } from 'react-jhipster';
 import moment from 'moment';
+
+const { Option } = Select;
 
 export interface IAddModalProps {
   isNew?: boolean;
@@ -30,41 +32,39 @@ const AddModal: FC<IAddModalProps> = ({ isNew, entity, gatewayId, visible, onOk,
     const newEntity: IDevice = {
       ...entity,
       ...values,
-      gateway: {
-        id: '44d72ccd-44d0-4b29-88b1-db1756095100',
-        ipAddress: '10.30.24.2',
-        name: 'gateway1',
-        serialNumber: '0001',
-      },
+      gateway: { id: gatewayId },
     };
 
     setLoading(true);
     if (isNew) {
       dispatch(createEntity(newEntity)).then(() => {
         setLoading(false);
+        form.resetFields();
         onOk();
       });
     } else {
       dispatch(updateEntity(newEntity)).then(() => {
         setLoading(false);
+        form.resetFields();
         onOk();
       });
     }
   };
 
-  const defaultValues = () => {
-    const ret = isNew
+  const defaultValues = () =>
+    isNew
       ? {
-          date: moment(displayDefaultDateTime()),
+          date: moment(),
         }
       : {
           status: Status.ONLINE,
           ...entity,
-          date: moment(convertDateTimeFromServer(entity.date)),
+          date: moment(entity?.date),
         };
-    console.log(ret);
-    return ret;
-  };
+
+  useEffect(() => {
+    form.setFieldsValue(defaultValues());
+  }, [isNew, entity]);
 
   const handleOk = () => {
     form.submit();
@@ -78,26 +78,32 @@ const AddModal: FC<IAddModalProps> = ({ isNew, entity, gatewayId, visible, onOk,
   const title = isNew ? translate('gatewaysApp.gateway.home.createLabel') : translate('gatewaysApp.gateway.home.editLabel');
 
   const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
+    labelCol: { span: 6 },
+    wrapperCol: { span: 18 },
+  };
+
+  const keyPress = e => {
+    if (e.key === 'Enter') {
+      handleOk();
+    }
   };
 
   return (
     <Modal title={title} visible={visible} onOk={handleOk} onCancel={handleCancel} confirmLoading={loading}>
-      <Form {...layout} form={form} onFinish={submit} initialValues={defaultValues()}>
+      <Form {...layout} form={form} onFinish={submit}>
         <Form.Item
-          label={translate('gatewaysApp.device.uID')}
-          name="uID"
+          label={translate('gatewaysApp.device.uid')}
+          name="uid"
           rules={[{ required: true, message: translate('entity.validation.required') }]}
         >
-          <Input type="number" />
+          <Input type="number" onKeyPress={keyPress} />
         </Form.Item>
         <Form.Item
           label={translate('gatewaysApp.device.vendor')}
           name="vendor"
           rules={[{ required: true, message: translate('entity.validation.required') }]}
         >
-          <Input />
+          <Input onKeyPress={keyPress} />
         </Form.Item>
         <Form.Item
           label={translate('gatewaysApp.device.date')}
@@ -111,14 +117,10 @@ const AddModal: FC<IAddModalProps> = ({ isNew, entity, gatewayId, visible, onOk,
           name="status"
           rules={[{ required: true, message: translate('entity.validation.required') }]}
         >
-          <Radio.Group>
-            <Radio.Button value={Status.ONLINE} key={Status.ONLINE}>
-              {translate('gatewaysApp.Status.' + Status.ONLINE)}
-            </Radio.Button>
-            <Radio.Button value={Status.OFFLINE} key={Status.OFFLINE}>
-              {translate('gatewaysApp.Status.' + Status.OFFLINE)}
-            </Radio.Button>
-          </Radio.Group>
+          <Select>
+            <Option value={Status.ONLINE}>{translate('gatewaysApp.Status.' + Status.ONLINE)}</Option>
+            <Option value={Status.OFFLINE}>{translate('gatewaysApp.Status.' + Status.OFFLINE)}</Option>
+          </Select>
         </Form.Item>
       </Form>
     </Modal>

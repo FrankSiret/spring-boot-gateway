@@ -58,7 +58,7 @@ export const DeviceDeleteDialog = (props: RouteComponentProps<{ id: string }>) =
       ]}
     >
       <div id="gatewaysApp.device.delete.question">
-        <Translate contentKey="gatewaysApp.device.delete.question" interpolate={{ id: deviceEntity.uID }}>
+        <Translate contentKey="gatewaysApp.device.delete.question" interpolate={{ id: deviceEntity.uid }}>
           Are you sure you want to delete this Device?
         </Translate>
       </div>

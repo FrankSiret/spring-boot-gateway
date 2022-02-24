@@ -38,11 +38,11 @@ export const DeviceDetail = (props: RouteComponentProps<{ id: string }>) => {
           </dt>
           <dd>{deviceEntity.id}</dd>
           <dt>
-            <span id="uID">
-              <Translate contentKey="gatewaysApp.device.uID">U ID</Translate>
+            <span id="uid">
+              <Translate contentKey="gatewaysApp.device.uid">U ID</Translate>
             </span>
           </dt>
-          <dd>{deviceEntity.uID}</dd>
+          <dd>{deviceEntity.uid}</dd>
           <dt>
             <span id="vendor">
               <Translate contentKey="gatewaysApp.device.vendor">Vendor</Translate>
@@ -54,7 +54,7 @@ export const DeviceDetail = (props: RouteComponentProps<{ id: string }>) => {
               <Translate contentKey="gatewaysApp.device.date">Date</Translate>
             </span>
           </dt>
-          <dd>{deviceEntity.date ? <TextFormat value={deviceEntity.date} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
+          <dd>{deviceEntity.date ? <TextFormat value={deviceEntity.date} type="date" format={APP_LOCAL_DATE_FORMAT} /> : null}</dd>
           <dt>
             <span id="status">
               <Translate contentKey="gatewaysApp.device.status">Status</Translate>

@@ -15,7 +15,7 @@ public class DeviceDTO implements Serializable {
     private UUID id;
 
     @NotNull
-    private Integer uID;
+    private Integer uid;
 
     @NotNull
     private String vendor;
@@ -36,12 +36,12 @@ public class DeviceDTO implements Serializable {
         this.id = id;
     }
 
-    public Integer getuID() {
-        return uID;
+    public Integer getUid() {
+        return uid;
     }
 
-    public void setuID(Integer uID) {
-        this.uID = uID;
+    public void setUid(Integer uid) {
+        this.uid = uid;
     }
 
     public String getVendor() {
@@ -102,7 +102,7 @@ public class DeviceDTO implements Serializable {
     public String toString() {
         return "DeviceDTO{" +
             "id='" + getId() + "'" +
-            ", uID=" + getuID() +
+            ", uid=" + getUid() +
             ", vendor='" + getVendor() + "'" +
             ", date='" + getDate() + "'" +
             ", status='" + getStatus() + "'" +

@@ -65,6 +65,12 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
     props.history.replace('/gateway');
   };
 
+  const [form] = Form.useForm();
+
+  const handleSubmit = () => {
+    form.submit();
+  };
+
   const title = isNew ? translate('gatewaysApp.gateway.home.createLabel') : translate('gatewaysApp.gateway.home.editLabel');
 
   const routes = [
@@ -97,7 +103,7 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
           </Spin>
         ) : (
           <Space direction="vertical" size="middle" className="gateway-update__body">
-            <Form layout="vertical" initialValues={defaultValues()} onFinish={saveEntity}>
+            <Form layout="vertical" initialValues={defaultValues()} onFinish={saveEntity} form={form}>
               <Form.Item
                 label={translate('gatewaysApp.gateway.serialNumber')}
                 id="gateway-serialNumber"
@@ -137,7 +143,7 @@ export const GatewayUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 type="primary"
                 id="save-entity"
                 data-cy="entityCreateSaveButton"
-                htmlType="submit"
+                onClick={handleSubmit}
                 disabled={updating}
                 icon={<SaveOutlined />}
               >

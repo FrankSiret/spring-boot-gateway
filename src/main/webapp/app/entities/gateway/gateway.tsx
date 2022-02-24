@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, RouteComponentProps } from 'react-router-dom';
-import { Button, Space, Table } from 'antd';
+import { Button, Divider, Space, Table, Tooltip } from 'antd';
 import { Translate, getSortState, translate } from 'react-jhipster';
 import { SyncOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
@@ -150,12 +150,12 @@ export const Gateway = (props: RouteComponentProps<{ url: string }>) => {
         title={<Title level={2}>{translate('gatewaysApp.gateway.home.title')}</Title>}
         subtitle={translate('gatewaysApp.gateway.home.subtitle')}
         buttons={[
-          <Button key="sync" onClick={handleSyncList} disabled={loading} icon={<SyncOutlined spin={loading} />}>
-            <Translate contentKey="gatewaysApp.gateway.home.refreshListLabel">Refresh List</Translate>
-          </Button>,
           <Button key="create" onClick={addClick} id="jh-create-entity" data-cy="entityCreateButton" icon={<PlusOutlined />}>
             <Translate contentKey="gatewaysApp.gateway.home.createLabel">Create new Gateway</Translate>
           </Button>,
+          <Tooltip key="sync" title={translate('gatewaysApp.gateway.home.refreshListLabel')}>
+            <Button shape="circle" onClick={handleSyncList} disabled={loading} icon={<SyncOutlined spin={loading} />} />
+          </Tooltip>,
         ]}
         routes={routes}
       />

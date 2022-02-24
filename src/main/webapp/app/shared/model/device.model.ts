@@ -4,7 +4,7 @@ import { Status } from 'app/shared/model/enumerations/status.model';
 
 export interface IDevice {
   id?: string;
-  uID?: number;
+  uid?: number;
   vendor?: string;
   date?: string;
   status?: Status;

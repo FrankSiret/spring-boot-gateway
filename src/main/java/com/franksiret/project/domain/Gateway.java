@@ -41,9 +41,8 @@ public class Gateway implements Serializable {
     private String ipAddress;
 
     @Size(max = 10)
-    @OneToMany(mappedBy = "gateway")
+    @OneToMany(mappedBy = "gateway", cascade = CascadeType.REMOVE)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "gateway" }, allowSetters = true)
     private Set<Device> devices = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

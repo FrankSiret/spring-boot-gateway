@@ -46,7 +46,7 @@ public class DeviceCriteria implements Serializable, Criteria {
 
     private UUIDFilter id;
 
-    private IntegerFilter uID;
+    private IntegerFilter uid;
 
     private StringFilter vendor;
 
@@ -62,7 +62,7 @@ public class DeviceCriteria implements Serializable, Criteria {
 
     public DeviceCriteria(DeviceCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
-        this.uID = other.uID == null ? null : other.uID.copy();
+        this.uid = other.uid == null ? null : other.uid.copy();
         this.vendor = other.vendor == null ? null : other.vendor.copy();
         this.date = other.date == null ? null : other.date.copy();
         this.status = other.status == null ? null : other.status.copy();
@@ -90,19 +90,19 @@ public class DeviceCriteria implements Serializable, Criteria {
         this.id = id;
     }
 
-    public IntegerFilter getuID() {
-        return uID;
+    public IntegerFilter getUid() {
+        return uid;
     }
 
-    public IntegerFilter uID() {
-        if (uID == null) {
-            uID = new IntegerFilter();
+    public IntegerFilter uid() {
+        if (uid == null) {
+            uid = new IntegerFilter();
         }
-        return uID;
+        return uid;
     }
 
-    public void setuID(IntegerFilter uID) {
-        this.uID = uID;
+    public void setUid(IntegerFilter uid) {
+        this.uid = uid;
     }
 
     public StringFilter getVendor() {
@@ -184,7 +184,7 @@ public class DeviceCriteria implements Serializable, Criteria {
         final DeviceCriteria that = (DeviceCriteria) o;
         return (
             Objects.equals(id, that.id) &&
-            Objects.equals(uID, that.uID) &&
+            Objects.equals(uid, that.uid) &&
             Objects.equals(vendor, that.vendor) &&
             Objects.equals(date, that.date) &&
             Objects.equals(status, that.status) &&
@@ -195,7 +195,7 @@ public class DeviceCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, uID, vendor, date, status, gatewayId, distinct);
+        return Objects.hash(id, uid, vendor, date, status, gatewayId, distinct);
     }
 
     // prettier-ignore
@@ -203,7 +203,7 @@ public class DeviceCriteria implements Serializable, Criteria {
     public String toString() {
         return "DeviceCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
-            (uID != null ? "uID=" + uID + ", " : "") +
+            (uid != null ? "uid=" + uid + ", " : "") +
             (vendor != null ? "vendor=" + vendor + ", " : "") +
             (date != null ? "date=" + date + ", " : "") +
             (status != null ? "status=" + status + ", " : "") +

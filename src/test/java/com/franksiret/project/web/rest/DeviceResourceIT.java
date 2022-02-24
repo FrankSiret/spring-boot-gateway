@@ -35,9 +35,9 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class DeviceResourceIT {
 
-    private static final Integer DEFAULT_U_ID = 1;
-    private static final Integer UPDATED_U_ID = 2;
-    private static final Integer SMALLER_U_ID = 1 - 1;
+    private static final Integer DEFAULT_UID = 1;
+    private static final Integer UPDATED_UID = 2;
+    private static final Integer SMALLER_UID = 1 - 1;
 
     private static final String DEFAULT_VENDOR = "AAAAAAAAAA";
     private static final String UPDATED_VENDOR = "BBBBBBBBBB";
@@ -73,7 +73,7 @@ class DeviceResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Device createEntity(EntityManager em) {
-        Device device = new Device().uID(DEFAULT_U_ID).vendor(DEFAULT_VENDOR).date(DEFAULT_DATE).status(DEFAULT_STATUS);
+        Device device = new Device().uid(DEFAULT_UID).vendor(DEFAULT_VENDOR).date(DEFAULT_DATE).status(DEFAULT_STATUS);
         return device;
     }
 
@@ -84,7 +84,7 @@ class DeviceResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Device createUpdatedEntity(EntityManager em) {
-        Device device = new Device().uID(UPDATED_U_ID).vendor(UPDATED_VENDOR).date(UPDATED_DATE).status(UPDATED_STATUS);
+        Device device = new Device().uid(UPDATED_UID).vendor(UPDATED_VENDOR).date(UPDATED_DATE).status(UPDATED_STATUS);
         return device;
     }
 
@@ -107,7 +107,7 @@ class DeviceResourceIT {
         List<Device> deviceList = deviceRepository.findAll();
         assertThat(deviceList).hasSize(databaseSizeBeforeCreate + 1);
         Device testDevice = deviceList.get(deviceList.size() - 1);
-        assertThat(testDevice.getuID()).isEqualTo(DEFAULT_U_ID);
+        assertThat(testDevice.getUid()).isEqualTo(DEFAULT_UID);
         assertThat(testDevice.getVendor()).isEqualTo(DEFAULT_VENDOR);
         assertThat(testDevice.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testDevice.getStatus()).isEqualTo(DEFAULT_STATUS);
@@ -134,10 +134,10 @@ class DeviceResourceIT {
 
     @Test
     @Transactional
-    void checkuIDIsRequired() throws Exception {
+    void checkuidIsRequired() throws Exception {
         int databaseSizeBeforeTest = deviceRepository.findAll().size();
         // set the field null
-        device.setuID(null);
+        device.setUid(null);
 
         // Create the Device, which fails.
         DeviceDTO deviceDTO = deviceMapper.toDto(device);
@@ -216,7 +216,7 @@ class DeviceResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(device.getId().toString())))
-            .andExpect(jsonPath("$.[*].uID").value(hasItem(DEFAULT_U_ID)))
+            .andExpect(jsonPath("$.[*].uid").value(hasItem(DEFAULT_UID)))
             .andExpect(jsonPath("$.[*].vendor").value(hasItem(DEFAULT_VENDOR)))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
@@ -234,7 +234,7 @@ class DeviceResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(device.getId().toString()))
-            .andExpect(jsonPath("$.uID").value(DEFAULT_U_ID))
+            .andExpect(jsonPath("$.uid").value(DEFAULT_UID))
             .andExpect(jsonPath("$.vendor").value(DEFAULT_VENDOR))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
@@ -254,106 +254,106 @@ class DeviceResourceIT {
 
     @Test
     @Transactional
-    void getAllDevicesByuIDIsEqualToSomething() throws Exception {
+    void getAllDevicesByuidIsEqualToSomething() throws Exception {
         // Initialize the database
         deviceRepository.saveAndFlush(device);
 
-        // Get all the deviceList where uID equals to DEFAULT_U_ID
-        defaultDeviceShouldBeFound("uID.equals=" + DEFAULT_U_ID);
+        // Get all the deviceList where uid equals to DEFAULT_UID
+        defaultDeviceShouldBeFound("uid.equals=" + DEFAULT_UID);
 
-        // Get all the deviceList where uID equals to UPDATED_U_ID
-        defaultDeviceShouldNotBeFound("uID.equals=" + UPDATED_U_ID);
+        // Get all the deviceList where uid equals to UPDATED_UID
+        defaultDeviceShouldNotBeFound("uid.equals=" + UPDATED_UID);
     }
 
     @Test
     @Transactional
-    void getAllDevicesByuIDIsNotEqualToSomething() throws Exception {
+    void getAllDevicesByuidIsNotEqualToSomething() throws Exception {
         // Initialize the database
         deviceRepository.saveAndFlush(device);
 
-        // Get all the deviceList where uID not equals to DEFAULT_U_ID
-        defaultDeviceShouldNotBeFound("uID.notEquals=" + DEFAULT_U_ID);
+        // Get all the deviceList where uid not equals to DEFAULT_UID
+        defaultDeviceShouldNotBeFound("uid.notEquals=" + DEFAULT_UID);
 
-        // Get all the deviceList where uID not equals to UPDATED_U_ID
-        defaultDeviceShouldBeFound("uID.notEquals=" + UPDATED_U_ID);
+        // Get all the deviceList where uid not equals to UPDATED_UID
+        defaultDeviceShouldBeFound("uid.notEquals=" + UPDATED_UID);
     }
 
     @Test
     @Transactional
-    void getAllDevicesByuIDIsInShouldWork() throws Exception {
+    void getAllDevicesByuidIsInShouldWork() throws Exception {
         // Initialize the database
         deviceRepository.saveAndFlush(device);
 
-        // Get all the deviceList where uID in DEFAULT_U_ID or UPDATED_U_ID
-        defaultDeviceShouldBeFound("uID.in=" + DEFAULT_U_ID + "," + UPDATED_U_ID);
+        // Get all the deviceList where uid in DEFAULT_UID or UPDATED_UID
+        defaultDeviceShouldBeFound("uid.in=" + DEFAULT_UID + "," + UPDATED_UID);
 
-        // Get all the deviceList where uID equals to UPDATED_U_ID
-        defaultDeviceShouldNotBeFound("uID.in=" + UPDATED_U_ID);
+        // Get all the deviceList where uid equals to UPDATED_UID
+        defaultDeviceShouldNotBeFound("uid.in=" + UPDATED_UID);
     }
 
     @Test
     @Transactional
-    void getAllDevicesByuIDIsNullOrNotNull() throws Exception {
+    void getAllDevicesByuidIsNullOrNotNull() throws Exception {
         // Initialize the database
         deviceRepository.saveAndFlush(device);
 
-        // Get all the deviceList where uID is not null
-        defaultDeviceShouldBeFound("uID.specified=true");
+        // Get all the deviceList where uid is not null
+        defaultDeviceShouldBeFound("uid.specified=true");
 
-        // Get all the deviceList where uID is null
-        defaultDeviceShouldNotBeFound("uID.specified=false");
+        // Get all the deviceList where uid is null
+        defaultDeviceShouldNotBeFound("uid.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllDevicesByuIDIsGreaterThanOrEqualToSomething() throws Exception {
+    void getAllDevicesByuidIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         deviceRepository.saveAndFlush(device);
 
-        // Get all the deviceList where uID is greater than or equal to DEFAULT_U_ID
-        defaultDeviceShouldBeFound("uID.greaterThanOrEqual=" + DEFAULT_U_ID);
+        // Get all the deviceList where uid is greater than or equal to DEFAULT_UID
+        defaultDeviceShouldBeFound("uid.greaterThanOrEqual=" + DEFAULT_UID);
 
-        // Get all the deviceList where uID is greater than or equal to UPDATED_U_ID
-        defaultDeviceShouldNotBeFound("uID.greaterThanOrEqual=" + UPDATED_U_ID);
+        // Get all the deviceList where uid is greater than or equal to UPDATED_UID
+        defaultDeviceShouldNotBeFound("uid.greaterThanOrEqual=" + UPDATED_UID);
     }
 
     @Test
     @Transactional
-    void getAllDevicesByuIDIsLessThanOrEqualToSomething() throws Exception {
+    void getAllDevicesByuidIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         deviceRepository.saveAndFlush(device);
 
-        // Get all the deviceList where uID is less than or equal to DEFAULT_U_ID
-        defaultDeviceShouldBeFound("uID.lessThanOrEqual=" + DEFAULT_U_ID);
+        // Get all the deviceList where uid is less than or equal to DEFAULT_UID
+        defaultDeviceShouldBeFound("uid.lessThanOrEqual=" + DEFAULT_UID);
 
-        // Get all the deviceList where uID is less than or equal to SMALLER_U_ID
-        defaultDeviceShouldNotBeFound("uID.lessThanOrEqual=" + SMALLER_U_ID);
+        // Get all the deviceList where uid is less than or equal to SMALLER_UID
+        defaultDeviceShouldNotBeFound("uid.lessThanOrEqual=" + SMALLER_UID);
     }
 
     @Test
     @Transactional
-    void getAllDevicesByuIDIsLessThanSomething() throws Exception {
+    void getAllDevicesByuidIsLessThanSomething() throws Exception {
         // Initialize the database
         deviceRepository.saveAndFlush(device);
 
-        // Get all the deviceList where uID is less than DEFAULT_U_ID
-        defaultDeviceShouldNotBeFound("uID.lessThan=" + DEFAULT_U_ID);
+        // Get all the deviceList where uid is less than DEFAULT_UID
+        defaultDeviceShouldNotBeFound("uid.lessThan=" + DEFAULT_UID);
 
-        // Get all the deviceList where uID is less than UPDATED_U_ID
-        defaultDeviceShouldBeFound("uID.lessThan=" + UPDATED_U_ID);
+        // Get all the deviceList where uid is less than UPDATED_UID
+        defaultDeviceShouldBeFound("uid.lessThan=" + UPDATED_UID);
     }
 
     @Test
     @Transactional
-    void getAllDevicesByuIDIsGreaterThanSomething() throws Exception {
+    void getAllDevicesByuidIsGreaterThanSomething() throws Exception {
         // Initialize the database
         deviceRepository.saveAndFlush(device);
 
-        // Get all the deviceList where uID is greater than DEFAULT_U_ID
-        defaultDeviceShouldNotBeFound("uID.greaterThan=" + DEFAULT_U_ID);
+        // Get all the deviceList where uid is greater than DEFAULT_UID
+        defaultDeviceShouldNotBeFound("uid.greaterThan=" + DEFAULT_UID);
 
-        // Get all the deviceList where uID is greater than SMALLER_U_ID
-        defaultDeviceShouldBeFound("uID.greaterThan=" + SMALLER_U_ID);
+        // Get all the deviceList where uid is greater than SMALLER_UID
+        defaultDeviceShouldBeFound("uid.greaterThan=" + SMALLER_UID);
     }
 
     @Test
@@ -625,7 +625,7 @@ class DeviceResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(device.getId().toString())))
-            .andExpect(jsonPath("$.[*].uID").value(hasItem(DEFAULT_U_ID)))
+            .andExpect(jsonPath("$.[*].uid").value(hasItem(DEFAULT_UID)))
             .andExpect(jsonPath("$.[*].vendor").value(hasItem(DEFAULT_VENDOR)))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
@@ -676,7 +676,7 @@ class DeviceResourceIT {
         Device updatedDevice = deviceRepository.findById(device.getId()).get();
         // Disconnect from session so that the updates on updatedDevice are not directly saved in db
         em.detach(updatedDevice);
-        updatedDevice.uID(UPDATED_U_ID).vendor(UPDATED_VENDOR).date(UPDATED_DATE).status(UPDATED_STATUS);
+        updatedDevice.uid(UPDATED_UID).vendor(UPDATED_VENDOR).date(UPDATED_DATE).status(UPDATED_STATUS);
         DeviceDTO deviceDTO = deviceMapper.toDto(updatedDevice);
 
         restDeviceMockMvc
@@ -691,7 +691,7 @@ class DeviceResourceIT {
         List<Device> deviceList = deviceRepository.findAll();
         assertThat(deviceList).hasSize(databaseSizeBeforeUpdate);
         Device testDevice = deviceList.get(deviceList.size() - 1);
-        assertThat(testDevice.getuID()).isEqualTo(UPDATED_U_ID);
+        assertThat(testDevice.getUid()).isEqualTo(UPDATED_UID);
         assertThat(testDevice.getVendor()).isEqualTo(UPDATED_VENDOR);
         assertThat(testDevice.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testDevice.getStatus()).isEqualTo(UPDATED_STATUS);
@@ -788,7 +788,7 @@ class DeviceResourceIT {
         List<Device> deviceList = deviceRepository.findAll();
         assertThat(deviceList).hasSize(databaseSizeBeforeUpdate);
         Device testDevice = deviceList.get(deviceList.size() - 1);
-        assertThat(testDevice.getuID()).isEqualTo(DEFAULT_U_ID);
+        assertThat(testDevice.getUid()).isEqualTo(DEFAULT_UID);
         assertThat(testDevice.getVendor()).isEqualTo(DEFAULT_VENDOR);
         assertThat(testDevice.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testDevice.getStatus()).isEqualTo(UPDATED_STATUS);
@@ -806,7 +806,7 @@ class DeviceResourceIT {
         Device partialUpdatedDevice = new Device();
         partialUpdatedDevice.setId(device.getId());
 
-        partialUpdatedDevice.uID(UPDATED_U_ID).vendor(UPDATED_VENDOR).date(UPDATED_DATE).status(UPDATED_STATUS);
+        partialUpdatedDevice.uid(UPDATED_UID).vendor(UPDATED_VENDOR).date(UPDATED_DATE).status(UPDATED_STATUS);
 
         restDeviceMockMvc
             .perform(
@@ -820,7 +820,7 @@ class DeviceResourceIT {
         List<Device> deviceList = deviceRepository.findAll();
         assertThat(deviceList).hasSize(databaseSizeBeforeUpdate);
         Device testDevice = deviceList.get(deviceList.size() - 1);
-        assertThat(testDevice.getuID()).isEqualTo(UPDATED_U_ID);
+        assertThat(testDevice.getUid()).isEqualTo(UPDATED_UID);
         assertThat(testDevice.getVendor()).isEqualTo(UPDATED_VENDOR);
         assertThat(testDevice.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testDevice.getStatus()).isEqualTo(UPDATED_STATUS);

@@ -100,16 +100,16 @@ export const DeviceUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 <Input />
               </Form.Item>
               <Form.Item
-                label={translate('gatewaysApp.device.uID')}
-                id="device-uID"
-                name="uID"
-                // data-cy="uID"
+                label={translate('gatewaysApp.device.uid')}
+                id="device-uid"
+                name="uid"
+                // data-cy="uid"
                 rules={[
                   { required: true, message: translate('entity.validation.required') },
                   { type: 'number', message: translate('entity.validation.number') },
                 ]}
               >
-                <Input data-cy="uID" />
+                <Input data-cy="uid" />
               </Form.Item>
               <Form.Item
                 label={translate('gatewaysApp.device.vendor')}

@@ -1,7 +1,9 @@
 package com.franksiret.project.service.mapper;
 
+import com.franksiret.project.domain.Device;
 import com.franksiret.project.domain.Gateway;
 import com.franksiret.project.service.dto.GatewayDTO;
+import java.util.Set;
 import org.mapstruct.*;
 
 /**

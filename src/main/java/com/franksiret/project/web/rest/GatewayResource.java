@@ -4,11 +4,13 @@ import com.franksiret.project.domain.Device;
 import com.franksiret.project.domain.Gateway;
 import com.franksiret.project.repository.DeviceRepository;
 import com.franksiret.project.repository.GatewayRepository;
+import com.franksiret.project.service.DeviceService;
 import com.franksiret.project.service.GatewayQueryService;
 import com.franksiret.project.service.GatewayService;
 import com.franksiret.project.service.criteria.GatewayCriteria;
 import com.franksiret.project.service.dto.DeviceDTO;
 import com.franksiret.project.service.dto.GatewayDTO;
+import com.franksiret.project.service.mapper.GatewayMapper;
 import com.franksiret.project.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -47,22 +50,30 @@ public class GatewayResource {
 
     private final GatewayService gatewayService;
 
+    private final DeviceService deviceService;
+
     private final GatewayRepository gatewayRepository;
 
     private final GatewayQueryService gatewayQueryService;
 
     private final DeviceRepository deviceRepository;
 
+    private final GatewayMapper gatewayMapper;
+
     public GatewayResource(
         GatewayService gatewayService,
         GatewayRepository gatewayRepository,
         GatewayQueryService gatewayQueryService,
-        DeviceRepository deviceRepository
+        DeviceRepository deviceRepository,
+        DeviceService deviceService,
+        GatewayMapper gatewayMapper
     ) {
         this.gatewayService = gatewayService;
         this.gatewayRepository = gatewayRepository;
         this.gatewayQueryService = gatewayQueryService;
         this.deviceRepository = deviceRepository;
+        this.deviceService = deviceService;
+        this.gatewayMapper = gatewayMapper;
     }
 
     /**
@@ -78,7 +89,7 @@ public class GatewayResource {
         if (gatewayDTO.getId() != null) {
             throw new BadRequestAlertException("A new gateway cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        if (gatewayRepository.existsBySerialNumber(gatewayDTO.getSerialNumber())) {
+        if (gatewayRepository.findOneBySerialNumber(gatewayDTO.getSerialNumber()).isPresent()) {
             throw new BadRequestAlertException("Serial number already exist", ENTITY_NAME, "serialnumbercloned");
         }
         GatewayDTO result = gatewayService.save(gatewayDTO);
@@ -114,9 +125,8 @@ public class GatewayResource {
         if (!gatewayRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        List<Gateway> serialNumberList = gatewayRepository.findBySerialNumber(gatewayDTO.getSerialNumber());
-        boolean matchSerialNumber = serialNumberList.stream().anyMatch(gateway -> gateway.getId() != id);
-        if (matchSerialNumber) {
+        Optional<Gateway> sn = gatewayRepository.findOneBySerialNumber(gatewayDTO.getSerialNumber());
+        if (sn.isPresent() && !Objects.equals(sn.get().getId(), id)) {
             throw new BadRequestAlertException("Serial number already exist", ENTITY_NAME, "serialnumbercloned");
         }
 
@@ -154,9 +164,8 @@ public class GatewayResource {
         if (!gatewayRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        List<Gateway> serialNumberList = gatewayRepository.findBySerialNumber(gatewayDTO.getSerialNumber());
-        boolean matchSerialNumber = serialNumberList.stream().anyMatch(gateway -> gateway.getId() != id);
-        if (matchSerialNumber) {
+        Optional<Gateway> sn = gatewayRepository.findOneBySerialNumber(gatewayDTO.getSerialNumber());
+        if (sn.isPresent() && !Objects.equals(sn.get().getId(), id)) {
             throw new BadRequestAlertException("Serial number already exist", ENTITY_NAME, "serialnumbercloned");
         }
 
@@ -238,5 +247,40 @@ public class GatewayResource {
         log.debug("REST request to get all Devices from the gateway: {}", id);
         List<Device> devices = deviceRepository.findByGateway_Id(id);
         return ResponseEntity.ok().body(devices);
+    }
+
+    /**
+     * {@code POST  /gateways/:id/devices} : Create a new device relate with gateway id.
+     *
+     * @param id the id of the gateway to relate.
+     * @param deviceDTO the deviceDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new gatewayDTO, or with status {@code 400 (Bad Request)} if the gateway has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/gateways/{id}/devices")
+    public ResponseEntity<DeviceDTO> createGatewaysDevice(@PathVariable UUID id, @Valid @RequestBody DeviceDTO deviceDTO)
+        throws URISyntaxException {
+        log.debug("REST request to save Device relate with gateway : {} {}", id, deviceDTO);
+        if (deviceDTO.getId() != null) {
+            throw new BadRequestAlertException("A new device cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (gatewayRepository.existsById(id)) {
+            throw new BadRequestAlertException("Gateway entity not found", ENTITY_NAME, "idnotfound");
+        }
+        if (deviceRepository.findOneByUid(deviceDTO.getUid()).isPresent()) {
+            throw new BadRequestAlertException("Serial number already exist", ENTITY_NAME, "serialnumbercloned");
+        }
+        long count = deviceRepository.countByGateway_Id(deviceDTO.getGateway().getId());
+        if (count >= 10) {
+            throw new BadRequestAlertException("No more than 10 devices are allowed", ENTITY_NAME, "maxdevices");
+        }
+        GatewayDTO gatewayDTO = gatewayService.findOne(id).get();
+        deviceDTO.setGateway(gatewayDTO);
+        DeviceDTO result = deviceService.save(deviceDTO);
+        //        GatewayDTO gatewayDTO = gatewayService.findOne(id).get();
+        return ResponseEntity
+            .created(new URI("/api/gateways/" + result.getId() + "/devices"))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 }
