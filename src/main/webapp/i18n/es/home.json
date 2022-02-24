@@ -22,7 +22,9 @@
       "contact": "Contacto",
       "contact.email": "Correo: ",
       "contact.website": "Sitio web: ",
-      "contact.resume": "Resumen CV"
+      "contact.resume": "Resumen CV",
+      "readme": "Puedes revisar al archivo Leeme ",
+      "howstart": "para saber cómo empezar."
     }
   }
 }

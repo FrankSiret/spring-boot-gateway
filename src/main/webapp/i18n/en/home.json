@@ -22,7 +22,9 @@
       "contact": "Contact",
       "contact.email": "Email: ",
       "contact.website": "Website: ",
-      "contact.resume": "Resume CV"
+      "contact.resume": "Resume CV",
+      "readme": "You can check the Readme file ",
+      "howstart": "to get how to start."
     }
   }
 }

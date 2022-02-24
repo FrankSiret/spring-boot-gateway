@@ -67,6 +67,15 @@ export const Home = () => {
           </a>
         </Text>
 
+        <Title level={2}>Readme</Title>
+        <Text>
+          <Translate contentKey="home.messages.readme">You can check the Readme file </Translate>
+          <a href="https://github.com/FrankSiret/spring-boot-gateway#readme" rel="noreferrer" target="_blank">
+            <Translate contentKey="home.messages.here">here </Translate>
+          </a>
+          <Translate contentKey="home.messages.howstart">to get how to start.</Translate>
+        </Text>
+
         <Title level={2}>
           <Translate contentKey="home.messages.contact">Contact</Translate>
         </Title>

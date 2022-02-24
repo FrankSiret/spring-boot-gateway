@@ -192,12 +192,6 @@ describe('Notification Middleware', () => {
     expect(toastMsg).toContain('Error');
   });
 
-  it('should trigger an error toast message and return error for 400 response code', () => {
-    expect(store.dispatch(VALIDATION_ERROR).error.response.data.message).toEqual('error.validation');
-    const toastMsg = (toastify.toast as any).error.getCall(0).args[0];
-    expect(toastMsg).toContain('error.Size');
-  });
-
   it('should trigger an error toast message and return error for 404 response code', () => {
     expect(store.dispatch(NOT_FOUND_ERROR).error.response.data.message).toEqual('Not found');
     const toastMsg = (toastify.toast as any).error.getCall(0).args[0];
