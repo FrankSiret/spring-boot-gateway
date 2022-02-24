@@ -26,4 +26,13 @@
 }
 .gateway-info {
   width: 100%;
+  &__left {
+    margin-top: 1rem;
+    &__buttons {
+      margin-top: 2rem;
+    }
+  }
+  &__items {
+    align-items: center;
+  }
 }

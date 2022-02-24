@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Form, Input, DatePicker, Radio } from 'antd';
+import { Button, Row, Col, Form, Input, DatePicker, Radio, Select, Space, Spin, Alert } from 'antd';
 import { isNumber, Translate, translate } from 'react-jhipster';
 import { SaveOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 
@@ -12,11 +12,16 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { Status } from 'app/shared/model/enumerations/status.model';
+import PageHeaderTitle from 'app/shared/layout/page-header-title';
+import Title from 'antd/lib/typography/Title';
+import moment from 'moment';
+
+const { Option } = Select;
 
 export const DeviceUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch();
 
-  const [isNew] = useState(!props.match.params || !props.match.params.id);
+  // const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const gateways = useAppSelector(state => state.gateway.entities);
   const deviceEntity = useAppSelector(state => state.device.entity);
@@ -29,13 +34,7 @@ export const DeviceUpdate = (props: RouteComponentProps<{ id: string }>) => {
   };
 
   useEffect(() => {
-    if (isNew) {
-      dispatch(reset());
-    } else {
-      dispatch(getEntity(props.match.params.id));
-    }
-
-    dispatch(getGateways({}));
+    dispatch(getEntity(props.match.params.id));
   }, []);
 
   useEffect(() => {
@@ -50,102 +49,95 @@ export const DeviceUpdate = (props: RouteComponentProps<{ id: string }>) => {
     const entity = {
       ...deviceEntity,
       ...values,
-      gateway: gateways.find(it => it.id.toString() === values.gateway.toString()),
+      gateway: { id: deviceEntity?.gateway?.id },
     };
 
-    if (isNew) {
-      dispatch(createEntity(entity));
-    } else {
-      dispatch(updateEntity(entity));
-    }
+    dispatch(updateEntity(entity));
   };
 
-  const defaultValues = () =>
-    isNew
-      ? {
-          date: displayDefaultDateTime(),
-        }
-      : {
-          status: 'ONLINE',
-          ...deviceEntity,
-          date: convertDateTimeFromServer(deviceEntity.date),
-          gateway: deviceEntity?.gateway?.id,
-        };
+  const defaultValues = () => ({
+    status: Status.OFFLINE,
+    ...deviceEntity,
+    date: moment(deviceEntity.date),
+    gateway: deviceEntity?.gateway?.id,
+  });
 
   const cancelClick = () => {
     props.history.replace('/device');
   };
 
+  const title = translate('gatewaysApp.device.home.editLabel');
+
+  const [form] = Form.useForm();
+
+  const handleSubmit = () => {
+    form.submit();
+  };
+
+  const routes = [
+    {
+      path: '/',
+      breadcrumbName: 'Home',
+    },
+    {
+      path: '/device',
+      breadcrumbName: translate('gatewaysApp.device.home.title'),
+    },
+    {
+      path: `/device/${deviceEntity.id}/edit`,
+      breadcrumbName: title,
+    },
+  ];
+
   return (
-    <div>
-      <Row className="justify-content-center">
-        <Col md="12">
-          <h2 id="gatewaysApp.device.home.createOrEditLabel" data-cy="DeviceCreateUpdateHeading">
-            <Translate contentKey="gatewaysApp.device.home.createOrEditLabel">Create or edit a Device</Translate>
-          </h2>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md="12">
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
-            <Form layout="vertical" initialValues={defaultValues()} onFinish={saveEntity}>
-              {!isNew ? (
-                <Form.Item name="id" id="device-id" label={translate('gatewaysApp.device.id')} rules={[{ required: true }]}>
-                  <Input readOnly />
-                </Form.Item>
-              ) : null}
-              <Form.Item id="device-gateway" name="gateway" label={translate('gatewaysApp.device.gateway')} rules={[{ required: true }]}>
-                <Input />
-              </Form.Item>
+    <Space direction="vertical" className="gateway-update">
+      <PageHeaderTitle
+        className="device-update__heading"
+        title={<Title level={2}>{title}</Title>}
+        subtitle={translate('gatewaysApp.device.home.createOrEditLabel')}
+        routes={routes}
+      />
+      <div>
+        {loading ? (
+          <Spin tip="">
+            <Alert message={translate('global.loading')}></Alert>
+          </Spin>
+        ) : (
+          <Space direction="vertical" size="middle" className="device-update__body">
+            <Form layout="vertical" initialValues={defaultValues()} onFinish={saveEntity} form={form}>
               <Form.Item
                 label={translate('gatewaysApp.device.uid')}
-                id="device-uid"
                 name="uid"
-                // data-cy="uid"
-                rules={[
-                  { required: true, message: translate('entity.validation.required') },
-                  { type: 'number', message: translate('entity.validation.number') },
-                ]}
+                rules={[{ required: true, message: translate('entity.validation.required') }]}
               >
-                <Input data-cy="uid" />
+                <Input type="number" />
               </Form.Item>
               <Form.Item
                 label={translate('gatewaysApp.device.vendor')}
-                id="device-vendor"
                 name="vendor"
-                // data-cy="vendor"
                 rules={[{ required: true, message: translate('entity.validation.required') }]}
               >
-                <Input data-cy="vendor" />
+                <Input />
               </Form.Item>
               <Form.Item
                 label={translate('gatewaysApp.device.date')}
-                id="device-date"
                 name="date"
-                data-cy="date"
                 rules={[{ required: true, message: translate('entity.validation.required') }]}
               >
-                <DatePicker data-cy="date" format="YYYY-MM-DD" />
+                <DatePicker allowClear />
               </Form.Item>
               <Form.Item
                 label={translate('gatewaysApp.device.status')}
-                id="device-status"
                 name="status"
-                // data-cy="status"
                 rules={[{ required: true, message: 'Please pick an item!' }]}
               >
-                <Radio.Group data-cy="status">
-                  {statusValues.map(status => (
-                    <Radio.Button value={status} key={status}>
-                      {translate('gatewaysApp.Status.' + status)}
-                    </Radio.Button>
-                  ))}
-                  <Radio.Button value="ONLINE">{translate('gatewaysApp.Status.' + statusValues[0])}</Radio.Button>
-                  <Radio.Button value="OFFLINE">{translate('gatewaysApp.Status.' + status)}</Radio.Button>
-                </Radio.Group>
+                <Select>
+                  <Option value={Status.ONLINE}>{translate('gatewaysApp.Status.' + Status.ONLINE)}</Option>
+                  <Option value={Status.OFFLINE}>{translate('gatewaysApp.Status.' + Status.OFFLINE)}</Option>
+                </Select>
               </Form.Item>
+            </Form>
+            <Space size="middle">
               <Button id="cancel-save" data-cy="entityCreateCancelButton" onClick={cancelClick} icon={<ArrowLeftOutlined />}>
                 <Translate contentKey="entity.action.back">Back</Translate>
               </Button>
@@ -153,17 +145,17 @@ export const DeviceUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 type="primary"
                 id="save-entity"
                 data-cy="entityCreateSaveButton"
-                htmlType="submit"
+                onClick={handleSubmit}
                 disabled={updating}
                 icon={<SaveOutlined />}
               >
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
-            </Form>
-          )}
-        </Col>
-      </Row>
-    </div>
+            </Space>
+          </Space>
+        )}
+      </div>
+    </Space>
   );
 };
 

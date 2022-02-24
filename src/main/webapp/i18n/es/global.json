@@ -142,7 +142,20 @@
     "file": {
       "could.not.extract": "No se pudo extraer el fichero",
       "not.image": "Se esperaba que el fichero fuera una imagen pero se encontro \"{{ fileType }}\""
-    }
+    },
+    "title": "¡Página de error!",
+    "http": {
+      "400": "Solicitud incorrecta.",
+      "403": "No tiene permisos para acceder a la página.",
+      "404": "La página no existe.",
+      "405": "El verbo HTTP utilizado no tiene soporte para este URL.",
+      "500": "Error interno del servidor."
+    },
+    "concurrencyFailure": "Otro usuario ha modificado estos datos al mismo tiempo que tú. Tus cambios fueron rechazados.",
+    "validation": "Error de validación en el servidor.",
+    "serialnumbercloned": "¡El Número de Serie ya existe!",
+    "uidcloned": "¡El UID ya existe!",
+    "password.size must be between 4 and 100": "La contraseña debe estar en el rango de 4 a 100 caracteres"
   },
   "footer": "Pie de página"
 }

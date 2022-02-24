@@ -10,6 +10,8 @@
     },
     "concurrencyFailure": "Otro usuario ha modificado estos datos al mismo tiempo que tú. Tus cambios fueron rechazados.",
     "validation": "Error de validación en el servidor.",
+    "serialnumbercloned": "¡El Número de Serie ya existe!",
+    "uidcloned": "¡El UID ya existe!",
     "password.size must be between 4 and 100": "La contraseña debe estar en el rango de 4 a 100 caracteres"
   }
 }

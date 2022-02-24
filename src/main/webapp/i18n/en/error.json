@@ -10,6 +10,8 @@
     },
     "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
     "validation": "Validation error on the server.",
+    "serialnumbercloned": "Serial number already exist!",
+    "uidcloned": "UID already exist!",
     "password.size must be between 4 and 100": "Password size must be between 4 and 100"
   }
 }

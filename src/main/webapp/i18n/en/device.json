@@ -6,6 +6,7 @@
         "subtitle": "List of Devices",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Device",
+        "editLabel": "Edit a Device",
         "createOrEditLabel": "Create or edit a Device",
         "notFound": "No Devices found"
       },

@@ -6,7 +6,7 @@
         "subtitle": "Lista de Gateways",
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Crear nuevo Gateway",
-        "editLabel": "Editar una Gateway",
+        "editLabel": "Editar la Gateway",
         "createOrEditLabel": "Crear o editar Gateway",
         "notFound": "No se han encontrado Gateways"
       },

@@ -78,8 +78,8 @@ const AddModal: FC<IAddModalProps> = ({ isNew, entity, gatewayId, visible, onOk,
   const title = isNew ? translate('gatewaysApp.gateway.home.createLabel') : translate('gatewaysApp.gateway.home.editLabel');
 
   const layout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 18 },
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 },
   };
 
   const keyPress = e => {

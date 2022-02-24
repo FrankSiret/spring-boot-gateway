@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Space, Switch, Table, Tag } from 'antd';
+import { Button, Space, Switch, Table, Tag, Tooltip } from 'antd';
 import { Translate, TextFormat, getSortState, translate } from 'react-jhipster';
 import { SyncOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Status } from 'app/shared/model/enumerations/status.model';
@@ -85,10 +85,6 @@ export const Device = (props: RouteComponentProps<{ url: string }>) => {
 
   const { match } = props;
 
-  const addClick = () => {
-    props.history.push(`${match.url}/new`);
-  };
-
   const columns: ColumnsType<IDevice> = [
     {
       key: 'uid',
@@ -124,24 +120,12 @@ export const Device = (props: RouteComponentProps<{ url: string }>) => {
           <Link
             to={`${match.url}/${gateway.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
           >
-            <Button
-              type="primary"
-              size="small"
-              data-cy="entityEditButton"
-              icon={<EditOutlined />}
-              title={translate('entity.action.edit', {}, 'Edit')}
-            />
+            <Button type="primary" size="small" icon={<EditOutlined />} title={translate('entity.action.edit', {}, 'Edit')} />
           </Link>
           <Link
             to={`${match.url}/${gateway.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
           >
-            <Button
-              danger
-              size="small"
-              data-cy="entityEditButton"
-              icon={<DeleteOutlined />}
-              title={translate('entity.action.delete', {}, 'Delete')}
-            />
+            <Button danger size="small" icon={<DeleteOutlined />} title={translate('entity.action.delete', {}, 'Delete')} />
           </Link>
         </Space>
       ),
@@ -170,12 +154,9 @@ export const Device = (props: RouteComponentProps<{ url: string }>) => {
         title={<Title level={2}>{translate('gatewaysApp.device.home.title')}</Title>}
         subtitle={translate('gatewaysApp.device.home.subtitle')}
         buttons={[
-          <Button key="sync" onClick={handleSyncList} disabled={loading} icon={<SyncOutlined spin={loading} />}>
-            <Translate contentKey="gatewaysApp.device.home.refreshListLabel">Refresh List</Translate>
-          </Button>,
-          <Button key="create" onClick={addClick} id="jh-create-entity" data-cy="entityCreateButton" icon={<PlusOutlined />}>
-            <Translate contentKey="gatewaysApp.device.home.createLabel">Create new Device</Translate>
-          </Button>,
+          <Tooltip key="sync" title={translate('gatewaysApp.device.home.refreshListLabel')}>
+            <Button shape="circle" onClick={handleSyncList} disabled={loading} icon={<SyncOutlined spin={loading} />} />
+          </Tooltip>,
         ]}
         routes={routes}
       />

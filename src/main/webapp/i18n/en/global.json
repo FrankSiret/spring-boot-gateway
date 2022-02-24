@@ -143,7 +143,20 @@
     "file": {
       "could.not.extract": "Could not extract file",
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
-    }
+    },
+    "title": "Error page!",
+    "http": {
+      "400": "Bad request.",
+      "403": "You are not authorized to access this page.",
+      "404": "The page does not exist.",
+      "405": "The HTTP verb you used is not supported for this URL.",
+      "500": "Internal server error."
+    },
+    "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+    "validation": "Validation error on the server.",
+    "serialnumbercloned": "Serial number already exist!",
+    "uidcloned": "UID already exist!",
+    "password.size must be between 4 and 100": "Password size must be between 4 and 100"
   },
   "footer": "This is your footer"
 }

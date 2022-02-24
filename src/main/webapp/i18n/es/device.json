@@ -6,6 +6,7 @@
         "subtitle": "Lista de Dispositivos",
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Crear nuevo Dispositivo",
+        "editLabel": "Editar el Dispositivo",
         "createOrEditLabel": "Crear o editar Dispositivo",
         "notFound": "No se han encontrado Dispositivos"
       },

@@ -9,7 +9,7 @@ const addErrorAlert = (message: string, key?, data?) => {
     return;
   }
   key = key ? key : message;
-  toast.error(translate(key, data));
+  toast.error(translate(key));
 };
 
 export default () => next => action => {
@@ -81,7 +81,12 @@ export default () => next => action => {
             } else if (typeof data === 'string' && data !== '') {
               addErrorAlert(data);
             } else {
-              toast.error(data?.message || data?.error || data?.title || 'Unknown error!');
+              const message = data?.message;
+              if (message) toast.error(translate(message));
+              else {
+                const message2 = data?.error || data?.title || 'Unknown error!';
+                toast.error(message2);
+              }
             }
             break;
           }

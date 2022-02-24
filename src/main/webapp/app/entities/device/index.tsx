@@ -13,7 +13,6 @@ import './device.scss';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/new`} component={DeviceUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={DeviceUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={DeviceDetail} />
       <ErrorBoundaryRoute path={match.url} component={Device} />

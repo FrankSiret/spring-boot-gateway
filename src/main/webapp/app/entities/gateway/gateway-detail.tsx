@@ -1,20 +1,28 @@
 import React, { useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Space, Spin, Alert } from 'antd';
-import { translate, Translate } from 'react-jhipster';
+import { Button, Row, Col, Space, Spin, Alert, Input, Divider, Table, Tag, Card } from 'antd';
+import { TextFormat, translate, Translate } from 'react-jhipster';
 import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons';
 
-import { getEntity } from './gateway.reducer';
+import { getDevices, getEntity } from './gateway.reducer';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import PageHeaderTitle from 'app/shared/layout/page-header-title';
 import Title from 'antd/lib/typography/Title';
+import Text from 'antd/lib/typography/Text';
+import { ColumnsType } from 'antd/lib/table';
+import { IDevice } from 'app/shared/model/device.model';
+import DeviceStatus from 'app/shared/components/device-status';
+import { Status } from 'app/shared/model/enumerations/status.model';
 
 export const GatewayDetail = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch();
 
+  const devices: IDevice[] = useAppSelector(state => state.gateway.devices);
+
   useEffect(() => {
     dispatch(getEntity(props.match.params.id));
+    dispatch(getDevices(props.match.params.id));
   }, []);
 
   const backClick = () => {
@@ -44,6 +52,38 @@ export const GatewayDetail = (props: RouteComponentProps<{ id: string }>) => {
     },
   ];
 
+  const item = ({ key, value }) => (
+    <>
+      <Col md={8}>
+        <Text strong>{key}</Text>
+      </Col>
+      <Col md={16}>
+        <Input readOnly value={value} />
+      </Col>
+    </>
+  );
+
+  const columns: ColumnsType<IDevice> = [
+    {
+      key: 'uid',
+      dataIndex: 'uid',
+      title: <Translate contentKey="gatewaysApp.device.uid">UID</Translate>,
+    },
+    { key: 'vendor', dataIndex: 'vendor', title: <Translate contentKey="gatewaysApp.device.vendor">Vendor</Translate> },
+    {
+      key: 'date',
+      dataIndex: 'date',
+      title: <Translate contentKey="gatewaysApp.device.date">Date</Translate>,
+      render: date => (date ? <TextFormat type="date" value={date} format={APP_LOCAL_DATE_FORMAT} /> : null),
+    },
+    {
+      key: 'status',
+      title: <Translate contentKey="gatewaysApp.device.status">Status</Translate>,
+      dataIndex: 'status',
+      render: status => <Tag color={status === Status.ONLINE ? 'green' : 'volcano'}>{status}</Tag>,
+    },
+  ];
+
   return (
     <Space direction="vertical" className="gateway-info">
       <PageHeaderTitle
@@ -52,37 +92,19 @@ export const GatewayDetail = (props: RouteComponentProps<{ id: string }>) => {
         subtitle={translate('gatewaysApp.gateway.detail.subtitle')}
         routes={routes}
       />
-      <div>
-        <Row>
+      <div className="gateway-info__left">
+        <Row gutter={16}>
           <Col md={12}>
-            <dl className="jh-entity-details">
-              <dt>
-                <span id="id">
-                  <Translate contentKey="gatewaysApp.gateway.id">Id</Translate>
-                </span>
-              </dt>
-              <dd>{gatewayEntity.id}</dd>
-              <dt>
-                <span id="serialNumber">
-                  <Translate contentKey="gatewaysApp.gateway.serialNumber">Serial Number</Translate>
-                </span>
-              </dt>
-              <dd>{gatewayEntity.serialNumber}</dd>
-              <dt>
-                <span id="name">
-                  <Translate contentKey="gatewaysApp.gateway.name">Name</Translate>
-                </span>
-              </dt>
-              <dd>{gatewayEntity.name}</dd>
-              <dt>
-                <span id="ipAddress">
-                  <Translate contentKey="gatewaysApp.gateway.ipAddress">Ip Address</Translate>
-                </span>
-              </dt>
-              <dd>{gatewayEntity.ipAddress}</dd>
-            </dl>
-
-            <Space size="middle">
+            <Card title={translate('gatewaysApp.gateway.detail.title')} bordered={false}>
+              <Row className="gateway-info__items" gutter={[16, 16]}>
+                {item({ key: translate('gatewaysApp.gateway.id'), value: gatewayEntity.id })}
+                {item({ key: translate('gatewaysApp.gateway.serialNumber'), value: gatewayEntity.serialNumber })}
+                {item({ key: translate('gatewaysApp.gateway.name'), value: gatewayEntity.name })}
+                {item({ key: translate('gatewaysApp.gateway.ipAddress'), value: gatewayEntity.ipAddress })}
+                {item({ key: translate('gatewaysApp.gateway.devices'), value: devices.length ?? 0 })}
+              </Row>
+            </Card>
+            <Space className="gateway-info__left__buttons" size="middle">
               <Button onClick={backClick} icon={<ArrowLeftOutlined />}>
                 <Translate contentKey="entity.action.back">Back</Translate>
               </Button>
@@ -91,7 +113,11 @@ export const GatewayDetail = (props: RouteComponentProps<{ id: string }>) => {
               </Button>
             </Space>
           </Col>
-          <Col md={12}></Col>
+          <Col md={12}>
+            <Card title={translate('gatewaysApp.device.home.title')} bordered={false}>
+              <Table columns={columns} dataSource={devices} rowKey={record => record.id} pagination={false} />
+            </Card>
+          </Col>
         </Row>
       </div>
     </Space>
