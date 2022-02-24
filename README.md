@@ -1,6 +1,8 @@
-# gateways
+# Gateways
 
-This application was generated using JHipster 7.6.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.6.0](https://www.jhipster.tech/documentation-archive/v7.6.0).
+![image](https://user-images.githubusercontent.com/53590759/155584278-433c1724-42f8-4962-8017-ea6066f23f15.png)
+
+This application was generated using JHipster 7.6.0, `to have a good starting point`, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.6.0](https://www.jhipster.tech/documentation-archive/v7.6.0).
 
 ## Project Structure
 
