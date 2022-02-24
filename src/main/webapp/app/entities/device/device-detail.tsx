@@ -1,11 +1,11 @@
 import React, { FC, useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Space, Card, Input } from 'antd';
-import { Translate, TextFormat, translate } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons';
 
 import { getEntity } from './device.reducer';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import PageHeaderTitle from 'app/shared/layout/page-header-title';
 import Title from 'antd/lib/typography/Title';

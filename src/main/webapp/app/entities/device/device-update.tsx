@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Form, Input, DatePicker, Radio, Select, Space, Spin, Alert } from 'antd';
-import { isNumber, Translate, translate } from 'react-jhipster';
+import React, { useEffect } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import { Button, Form, Input, DatePicker, Select, Space, Spin, Alert } from 'antd';
+import { Translate, translate } from 'react-jhipster';
 import { SaveOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 
-import { IGateway } from 'app/shared/model/gateway.model';
-import { getEntities as getGateways } from 'app/entities/gateway/gateway.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './device.reducer';
-import { IDevice } from 'app/shared/model/device.model';
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
+import { getEntity, updateEntity } from './device.reducer';
+import { convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { Status } from 'app/shared/model/enumerations/status.model';
 import PageHeaderTitle from 'app/shared/layout/page-header-title';

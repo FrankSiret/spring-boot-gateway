@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import { Translate, translate } from 'react-jhipster';
 import { Button, Modal, Alert, Form, Input } from 'antd';

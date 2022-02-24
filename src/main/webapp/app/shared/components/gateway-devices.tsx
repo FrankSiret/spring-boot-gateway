@@ -1,11 +1,11 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Link, RouteComponentProps, useLocation } from 'react-router-dom';
-import { Button, Collapse, Divider, Form, Modal, Space, Table, Tag, Tooltip } from 'antd';
-import { Translate, TextFormat, getSortState, translate } from 'react-jhipster';
-import { SettingOutlined, SyncOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { useLocation } from 'react-router-dom';
+import { Button, Collapse, Divider, Space, Table, Tooltip } from 'antd';
+import { Translate, TextFormat, translate } from 'react-jhipster';
+import { SyncOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import { IDevice } from 'app/shared/model/device.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { ColumnsType } from 'antd/lib/table';
 import Title from 'antd/lib/typography/Title';

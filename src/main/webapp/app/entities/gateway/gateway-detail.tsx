@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Space, Spin, Alert, Input, Divider, Table, Tag, Card } from 'antd';
+import { RouteComponentProps } from 'react-router-dom';
+import { Button, Row, Col, Space, Input, Table, Tag, Card } from 'antd';
 import { TextFormat, translate, Translate } from 'react-jhipster';
 import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons';
 
 import { getDevices, getEntity } from './gateway.reducer';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import PageHeaderTitle from 'app/shared/layout/page-header-title';
 import Title from 'antd/lib/typography/Title';
 import Text from 'antd/lib/typography/Text';
 import { ColumnsType } from 'antd/lib/table';
 import { IDevice } from 'app/shared/model/device.model';
-import DeviceStatus from 'app/shared/components/device-status';
 import { Status } from 'app/shared/model/enumerations/status.model';
 
 export const GatewayDetail = (props: RouteComponentProps<{ id: string }>) => {

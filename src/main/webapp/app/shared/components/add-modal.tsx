@@ -1,10 +1,9 @@
-/* eslint-disable no-console */
 import React, { FC, useEffect, useState } from 'react';
-import { DatePicker, Form, Input, Modal, Radio, Select } from 'antd';
+import { DatePicker, Form, Input, Modal, Select } from 'antd';
 import { useAppDispatch } from 'app/config/store';
 import { createEntity, updateEntity } from '../../entities/device/device.reducer';
 import { IDevice } from 'app/shared/model/device.model';
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
+import { convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { Status } from 'app/shared/model/enumerations/status.model';
 import { translate } from 'react-jhipster';
 import moment from 'moment';

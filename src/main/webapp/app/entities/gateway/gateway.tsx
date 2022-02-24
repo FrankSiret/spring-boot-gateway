@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link, NavLink, RouteComponentProps } from 'react-router-dom';
-import { Button, Divider, Space, Table, Tooltip } from 'antd';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { Button, Space, Table, Tooltip } from 'antd';
 import { Translate, getSortState, translate } from 'react-jhipster';
 import { SyncOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import { getEntities } from './gateway.reducer';
 import { IGateway } from 'app/shared/model/gateway.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';

@@ -1,14 +1,12 @@
-/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Space, Switch, Table, Tag, Tooltip } from 'antd';
+import { Button, Space, Table, Tooltip } from 'antd';
 import { Translate, TextFormat, getSortState, translate } from 'react-jhipster';
-import { SyncOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Status } from 'app/shared/model/enumerations/status.model';
+import { SyncOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
-import { getEntities, updateEntity } from './device.reducer';
+import { getEntities } from './device.reducer';
 import { IDevice } from 'app/shared/model/device.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
