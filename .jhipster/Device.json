@@ -10,7 +10,7 @@
       "fieldType": "UUID"
     },
     {
-      "fieldName": "uID",
+      "fieldName": "uid",
       "fieldType": "Integer",
       "fieldValidateRules": ["required", "unique"]
     },
@@ -21,7 +21,7 @@
     },
     {
       "fieldName": "date",
-      "fieldType": "Instant",
+      "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
     },
     {
@@ -44,5 +44,6 @@
       "relationshipType": "many-to-one"
     }
   ],
-  "service": "serviceClass"
+  "service": "serviceClass",
+  "skipClient": true
 }

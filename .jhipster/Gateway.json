@@ -39,5 +39,6 @@
       "relationshipType": "one-to-many"
     }
   ],
-  "service": "serviceClass"
+  "service": "serviceClass",
+  "skipClient": true
 }
