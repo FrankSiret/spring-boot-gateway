@@ -9,34 +9,37 @@ This application was generated using JHipster 7.6.0, `to have a good starting po
 A sample project to managing gateways - master devices that control multiple peripheral devices.
 
 ## Logic of the application
+
 REST service (JSON/HTTP) for storing information about these gateways and their associated devices. This information is stored in the database.
-When storing a gateway, any field marked as "to be validated" must be validated and an error returned if it is invalid. Also, no more than 10 peripheral devices are allowed for a gateway. 
+When storing a gateway, any field marked as "to be validated" must be validated and an error returned if it is invalid. Also, no more than 10 peripheral devices are allowed for a gateway.
 
 The service must also offer an operation for displaying information about all stored gateways (and their devices) and an operation for displaying details for a single gateway. Finally, it must be possible to add and remove a device from a gateway.
 
 Each gateway has:
 
--   a unique serial number (string),
--   human-readable name (string),
--   IPv4 address (to be validated),
--   multiple associated peripheral devices.
+- a unique serial number (string),
+- human-readable name (string),
+- IPv4 address (to be validated),
+- multiple associated peripheral devices.
 
 Each peripheral device has:
 
--   a UID (number),
--   vendor (string),
--   date created,
--   status - online/offline.
+- a UID (number),
+- vendor (string),
+- date created,
+- status - online/offline.
 
 ## Technologys used
 
-- [jhipster homepage](https://www.jhipster.tech)
-- [node.js](https://nodejs.org/)
-- [npm](https://www.npmjs.com/)
-- [webpack](https://webpack.github.io/)
-- [jest](https://facebook.github.io/jest/)
-- [Swagger v3.0](https://swagger.io)
-
+- [jhipster v7.6](https://www.jhipster.tech)
+- [open-jdk v11.0](https://adoptopenjdk.net/)
+- [npm v8.3](https://www.npmjs.com/)
+- [node.js v16.14](https://nodejs.org/)
+- [react.js v17.0](https://git-scm.com/)
+- [webpack v5.66](https://webpack.github.io/)
+- [ant-design v4.16](https://webpack.github.io/)
+- [jest v27.4](https://facebook.github.io/jest/)
+- [swagger v3.0](https://swagger.io)
 
 ## Installation
 
@@ -62,20 +65,21 @@ We use npm scripts and [Webpack](https://webpack.js.org/) as our build system.
 
 ### Configure the environment
 
-It required to configure ports, database name and users credentials for accessing the database, 
+It required to configure ports, database name and users credentials for accessing the database,
 
 1. in the file `.\pom.xml`:
 
-    ![image](https://user-images.githubusercontent.com/53590759/155591550-ae7fcf63-5158-46ff-9c02-e661ab1b6841.png)
-    
-    - at line 918 and 919 you can change the database name,
-    - at line 920 and 920 you can find the user credentials,
-    - remplace all that for your data
-    
+   ![image](https://user-images.githubusercontent.com/53590759/155591550-ae7fcf63-5158-46ff-9c02-e661ab1b6841.png)
+
+   - at line 918 and 919 you can change the database name,
+   - at line 920 and 920 you can find the user credentials,
+   - remplace all that for your data
+
 2. and file `.\src\main\resources\config\application-dev`
 
-    ![image](https://user-images.githubusercontent.com/53590759/155591665-240896ae-8d0c-4cff-a016-9f3e85706115.png)
-    - at line 35, 36, and 37 are all data you need to change
+   ![image](https://user-images.githubusercontent.com/53590759/155591665-240896ae-8d0c-4cff-a016-9f3e85706115.png)
+
+   - at line 35, 36, and 37 are all data you need to change
 
 Then, run the following commands in two separate terminals to create a blissful development experience.
 
@@ -118,10 +122,9 @@ Unit tests are run by [Jest](https://jestjs.io/). They're located in [src/test/j
 npm test
 ```
 
-
 ## Contact
 
 Frank Rodríguez Siret
 
--   Linkedin: [Frank Rodríguez Siret](https://www.linkedin.com/in/frank-siret)
--   Email: frank.siret@gmail.com
+- Linkedin: [Frank Rodríguez Siret](https://www.linkedin.com/in/frank-siret)
+- Email: frank.siret@gmail.com

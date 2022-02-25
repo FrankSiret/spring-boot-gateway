@@ -36,7 +36,10 @@ public class Gateway implements Serializable {
     private String name;
 
     @NotNull
-    @Pattern(regexp = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.|$)){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
+    @Pattern(
+        regexp = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.|$)){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",
+        message = "IP Address is not a valid IP"
+    )
     @Column(name = "ip_address", nullable = false)
     private String ipAddress;
 

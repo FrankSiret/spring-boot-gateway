@@ -10,6 +10,7 @@ import com.franksiret.project.domain.Device;
 import com.franksiret.project.domain.Gateway;
 import com.franksiret.project.repository.GatewayRepository;
 import com.franksiret.project.service.criteria.GatewayCriteria;
+import com.franksiret.project.service.dto.DeviceDTO;
 import com.franksiret.project.service.dto.GatewayDTO;
 import com.franksiret.project.service.mapper.GatewayMapper;
 import java.util.List;
@@ -40,6 +41,7 @@ class GatewayResourceIT {
 
     private static final String DEFAULT_IP_ADDRESS = "192.168.1.1";
     private static final String UPDATED_IP_ADDRESS = "192.168.1.2";
+    private static final String BAD_IP_ADDRESS = "192.168.0";
 
     private static final String ENTITY_API_URL = "/api/gateways";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -125,6 +127,27 @@ class GatewayResourceIT {
 
     @Test
     @Transactional
+    void createGatewayWithExistingSerialNumber() throws Exception {
+        // Create the Gateway with an existing Serial Number
+        gatewayRepository.saveAndFlush(gateway);
+
+        Gateway gateway = new Gateway().serialNumber(DEFAULT_SERIAL_NUMBER).name(DEFAULT_NAME).ipAddress(DEFAULT_IP_ADDRESS);
+        GatewayDTO gatewayDTO = gatewayMapper.toDto(gateway);
+
+        int databaseSizeBeforeCreate = gatewayRepository.findAll().size();
+
+        // An entity with an existing ID cannot be created, so this API call must fail
+        restGatewayMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(gatewayDTO)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the Gateway in the database
+        List<Gateway> gatewayList = gatewayRepository.findAll();
+        assertThat(gatewayList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
     void checkSerialNumberIsRequired() throws Exception {
         int databaseSizeBeforeTest = gatewayRepository.findAll().size();
         // set the field null
@@ -165,6 +188,24 @@ class GatewayResourceIT {
         int databaseSizeBeforeTest = gatewayRepository.findAll().size();
         // set the field null
         gateway.setIpAddress(null);
+
+        // Create the Gateway, which fails.
+        GatewayDTO gatewayDTO = gatewayMapper.toDto(gateway);
+
+        restGatewayMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(gatewayDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Gateway> gatewayList = gatewayRepository.findAll();
+        assertThat(gatewayList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkBadIpAddressValidation() throws Exception {
+        int databaseSizeBeforeTest = gatewayRepository.findAll().size();
+        // set the field to a bad ip address
+        gateway.setIpAddress(BAD_IP_ADDRESS);
 
         // Create the Gateway, which fails.
         GatewayDTO gatewayDTO = gatewayMapper.toDto(gateway);

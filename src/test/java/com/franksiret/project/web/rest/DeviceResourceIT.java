@@ -10,7 +10,7 @@ import com.franksiret.project.domain.Device;
 import com.franksiret.project.domain.Gateway;
 import com.franksiret.project.domain.enumeration.Status;
 import com.franksiret.project.repository.DeviceRepository;
-import com.franksiret.project.service.criteria.DeviceCriteria;
+import com.franksiret.project.repository.GatewayRepository;
 import com.franksiret.project.service.dto.DeviceDTO;
 import com.franksiret.project.service.mapper.DeviceMapper;
 import java.time.LocalDate;
@@ -37,6 +37,7 @@ class DeviceResourceIT {
 
     private static final Integer DEFAULT_UID = 1;
     private static final Integer UPDATED_UID = 2;
+    private static final Integer ANOTHER_UID = 3;
     private static final Integer SMALLER_UID = 1 - 1;
 
     private static final String DEFAULT_VENDOR = "AAAAAAAAAA";
@@ -52,8 +53,16 @@ class DeviceResourceIT {
     private static final String ENTITY_API_URL = "/api/devices";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
+    // Data for create gateway
+    private static final String DEFAULT_SERIAL_NUMBER = "AAAAAAAAAA";
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String DEFAULT_IP_ADDRESS = "192.168.1.1";
+
     @Autowired
     private DeviceRepository deviceRepository;
+
+    @Autowired
+    private GatewayRepository gatewayRepository;
 
     @Autowired
     private DeviceMapper deviceMapper;
@@ -75,6 +84,28 @@ class DeviceResourceIT {
     public static Device createEntity(EntityManager em) {
         Device device = new Device().uid(DEFAULT_UID).vendor(DEFAULT_VENDOR).date(DEFAULT_DATE).status(DEFAULT_STATUS);
         return device;
+    }
+
+    /**
+     * Create an entity with UID provided for a test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static Device createEntityWithUID(EntityManager em, Integer UID) {
+        Device device = new Device().uid(UID).vendor(DEFAULT_VENDOR).date(DEFAULT_DATE).status(DEFAULT_STATUS);
+        return device;
+    }
+
+    /**
+     * Create a gateway entity for a test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static Gateway createGateway(EntityManager em) {
+        Gateway gateway = new Gateway().serialNumber(DEFAULT_SERIAL_NUMBER).name(DEFAULT_NAME).ipAddress(DEFAULT_IP_ADDRESS);
+        return gateway;
     }
 
     /**
@@ -123,6 +154,58 @@ class DeviceResourceIT {
         int databaseSizeBeforeCreate = deviceRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
+        restDeviceMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(deviceDTO)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the Device in the database
+        List<Device> deviceList = deviceRepository.findAll();
+        assertThat(deviceList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void createDeviceWithExistingUid() throws Exception {
+        // Create the Device with an existing UID
+        deviceRepository.saveAndFlush(device);
+
+        Device newDevice = createEntityWithUID(em, DEFAULT_UID);
+        DeviceDTO deviceDTO = deviceMapper.toDto(newDevice);
+
+        int databaseSizeBeforeCreate = deviceRepository.findAll().size();
+
+        // An entity with an existing UID cannot be created, so this API call must fail
+        restDeviceMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(deviceDTO)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the Device in the database
+        List<Device> deviceList = deviceRepository.findAll();
+        assertThat(deviceList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void noMoreThan10DevicesAreAllowedForAGateway() throws Exception {
+        // Create the Gateway
+        Gateway gateway = createGateway(em);
+        gatewayRepository.saveAndFlush(gateway);
+        // Create the 10 Device with UIDs from 1 to 10
+        for (int uid = 1; uid <= 10; uid++) {
+            Device deviceUID = createEntityWithUID(em, uid);
+            deviceUID.setGateway(gateway);
+            deviceRepository.save(deviceUID);
+        }
+        deviceRepository.flush();
+
+        // Create new device with UID 11
+        Device newDevice = createEntityWithUID(em, 11);
+        newDevice.setGateway(gateway);
+        DeviceDTO deviceDTO = deviceMapper.toDto(newDevice);
+
+        int databaseSizeBeforeCreate = deviceRepository.findAll().size();
+
+        // A gateway cannot have more than 10 device related, so this API call must fail
         restDeviceMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(deviceDTO)))
             .andExpect(status().isBadRequest());
