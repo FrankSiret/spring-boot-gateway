@@ -31,14 +31,15 @@ Each peripheral device has:
 
 ## Technologys used
 
-- [jhipster v7.6](https://www.jhipster.tech)
+- [jhipster v7.6](https://www.jhipster.tech/)
 - [open-jdk v11.0](https://adoptopenjdk.net/)
-- [npm v8.3](https://www.npmjs.com/)
+- [npm v8.3](https://nodejs.org/)
 - [node.js v16.14](https://nodejs.org/)
-- [react.js v17.0](https://git-scm.com/)
+- [react.js v17.0](https://reactjs.org/)
 - [webpack v5.66](https://webpack.github.io/)
-- [ant-design v4.16](https://webpack.github.io/)
-- [jest v27.4](https://facebook.github.io/jest/)
+- [ant-design v4.16](https://ant.design/)
+- [junit v5](https://junit.org/junit5/)
+- [jest v27.4](https://jestjs.io/)
 - [swagger v3.0](https://swagger.io)
 
 ## Installation
