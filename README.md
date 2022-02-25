@@ -42,8 +42,6 @@ Each peripheral device has:
 - [jest v27.4](https://jestjs.io/)
 - [swagger v3.0](https://swagger.io)
 
-## Installation
-
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
@@ -129,3 +127,4 @@ Frank Rodríguez Siret
 
 - Linkedin: [Frank Rodríguez Siret](https://www.linkedin.com/in/frank-siret)
 - Email: frank.siret@gmail.com
+- Resume CV: [Resume CV](https://franksiret.github.io/resume-cv)
