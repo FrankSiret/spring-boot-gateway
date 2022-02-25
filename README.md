@@ -100,7 +100,7 @@ To build the final jar and optimize the gateways application for production, run
 To ensure everything worked, run:
 
 ```
-java -jar target/*.jar
+java -jar .\target\<YOUR BUILT SNAPSHOT>.jar
 ```
 
 Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
